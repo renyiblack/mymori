@@ -12,7 +12,7 @@ public class CardDao implements DaoInterface<Card> {
     @Override
     public void connect() {
         try {
-            String url = "jdbc:mysql://127.0.0.1:3306/?user=root";
+            String url = "jdbc:mysql://127.0.0.1:3306/mymori?user=root&password=admin";
             conn = DriverManager.getConnection(url);
         } catch (SQLException e) {
             throw new Error("Failed connection!", e);
@@ -20,7 +20,7 @@ public class CardDao implements DaoInterface<Card> {
     }
 
     @Override
-    public int insert(Card card) throws SQLException {
+    public void insert(Card card) throws SQLException {
         connect();
 
         try {
@@ -30,15 +30,10 @@ public class CardDao implements DaoInterface<Card> {
             preparedStatement.setString(1, card.getQuestion());
             preparedStatement.setString(2, card.getAnswer());
 
-            ResultSet rs = preparedStatement.executeQuery();
-
-            card.setId(Integer.valueOf(rs.getString("id")));
-
+            int rs = preparedStatement.executeUpdate();
             if (conn != null) {
                 conn.close();
             }
-
-            return card.getId();
         } catch (SQLException e) {
             if (conn != null) {
                 conn.close();

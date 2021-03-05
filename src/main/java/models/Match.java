@@ -18,8 +18,13 @@ public class Match {
 
         ArrayList<Card> selectedCards = new ArrayList<>();
 
-        ids.forEach(id->selectedCards.add(allCards.get(Integer.parseInt(id))));
-
+        try {
+            ids.forEach(id -> selectedCards.add(allCards.get(Integer.parseInt(id) - 1)));
+        }
+        catch (Exception e){
+            System.out.println("Couldn't get cards");
+            return;
+        }
 
         this.questionBoard = new ArrayList<>(selectedCards);
         Collections.shuffle(this.questionBoard);
