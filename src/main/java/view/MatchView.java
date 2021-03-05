@@ -36,7 +36,7 @@ public class MatchView {
             if(!board.contains(card)) {
                 System.out.print("@ ");
             } else {
-                System.out.print(Integer.toString(originalBoard.indexOf(card)) + " ");
+                System.out.print(originalBoard.indexOf(card) + " ");
             }
         }
         System.out.print("}\n");
@@ -49,7 +49,7 @@ public class MatchView {
             if(!board.contains(card)) {
                 System.out.print("@ ");
             } else {
-                System.out.print(Integer.toString(originalBoard.indexOf(card)) + " ");
+                System.out.print(originalBoard.indexOf(card) + " ");
             }
         }
         System.out.print("}\n");
@@ -93,7 +93,7 @@ public class MatchView {
     }
 
     public void displayRemainingAttempts() {
-        System.out.println("Remaining number of attempts: " + Integer.toString(match.getRemainingAttempts()));
+        System.out.println("Remaining number of attempts: " + match.getRemainingAttempts());
     }
 
     public Card selectQuestion() {

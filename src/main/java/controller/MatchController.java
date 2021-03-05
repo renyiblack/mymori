@@ -120,7 +120,7 @@ public class MatchController {
 
             if(questionCard.equals(answerCard)) {
                 view.displayRightAnswerScreen();
-                match.removeCard(String.valueOf(questionCard.getId()));
+                match.removeCard(questionCard.getId());
             } else {
                 view.displayWrongAnswerScreen();
             }

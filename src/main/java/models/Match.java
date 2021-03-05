@@ -38,7 +38,7 @@ public class Match {
         return remainingAttempts;
     }
 
-    public void removeCard(String id) {
+    public void removeCard(Integer id) {
         this.questionBoard.removeIf(card -> card.getId().equals(id));
         this.answerBoard.removeIf(card -> card.getId().equals(id));
     }
