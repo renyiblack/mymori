@@ -1,0 +1,88 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.8'
+}
+
+group 'mymori'
+version '1.0-SNAPSHOT'
+
+mainClassName = 'Main'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/mysql/mysql-connector-java
+    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.22'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+}
+
+javafx {
+    version = "11.0.2"
+    modules = ['javafx.controls', 'javafx.fxml']
+}
+
+test {
+    useJUnitPlatform()
+
+    doFirst {
+        jvmArgs = [
+            '--module-path', classpath.asPath,
+            '--add-modules', 'javafx.controls',
+            '--add-modules', 'javafx.fxml',
+            // '--add-modules', 'javafx.web',
+            // '--add-modules', 'javafx.graphics',
+            // '--add-modules', 'javafx.media'
+        ]
+    }
+}
+
+// compileJava {
+//     inputs.property("moduleName", moduleName)
+//     doFirst {
+//         options.compilerArgs = [
+//             '--module-path', classpath.asPath,
+//             '--add-modules', 'javafx.controls',
+//             '--add-modules', 'javafx.fxml',
+//             '--add-modules', 'javafx.web',
+//             '--add-modules', 'javafx.graphics',
+//             '--add-modules', 'javafx.media'
+//         ]
+//         classpath = files()
+//     }
+// }
+
+run {
+    doFirst {
+        jvmArgs = [
+                '--module-path', classpath.asPath,
+                '--add-modules', 'javafx.controls',
+                '--add-modules', 'javafx.fxml',
+                // '--add-modules', 'javafx.web',
+                // '--add-modules', 'javafx.graphics',
+                // '--add-modules', 'javafx.media'
+        ]
+    }
+}
+
+// javadoc {
+//     inputs.property("moduleName", moduleName)
+//     doFirst {
+//         exclude "**/module-info.java"
+//         options.addStringOption('-module-path', classpath.asPath)
+//         options.addStringOption('-add-modules', 'javafx.controls')
+//         options.addStringOption('-add-modules', 'javafx.fxml')
+//         options.addStringOption('-add-modules', 'javafx.web')
+//         options.addStringOption('-add-modules', 'javafx.graphics')
+//         options.addStringOption('-add-modules', 'javafx.media')
+//         options.addStringOption('-class-path', "")
+//         options.addBooleanOption('html5', true)
+//         options.addBooleanOption('verbose', true)
+//     }
+// }
