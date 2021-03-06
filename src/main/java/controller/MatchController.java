@@ -116,7 +116,16 @@ public class MatchController {
             view.displayQuestionBoard();
             view.displayAnswerBoard();
             Card questionCard = view.selectQuestion();
+
+            if(questionCard.getId() == -1) {
+                break;
+            }
             Card answerCard = view.selectAnswar();
+
+            if(answerCard.getId() == -1) {
+                break;
+            }
+
 
             if(questionCard.equals(answerCard)) {
                 view.displayRightAnswerScreen();

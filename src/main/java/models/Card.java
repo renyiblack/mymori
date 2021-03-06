@@ -8,6 +8,10 @@ public class Card {
     private String question;
     private String answer;
 
+    public Card(){
+        id = -1;
+    }
+
     public static Card fromRs(ResultSet rs) throws SQLException {
         Card card = new Card();
 

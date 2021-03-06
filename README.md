@@ -1,1 +1,1 @@
-# mymory
+# mymori

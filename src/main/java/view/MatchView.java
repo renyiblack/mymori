@@ -98,8 +98,11 @@ public class MatchView {
 
     public Card selectQuestion() {
         Scanner sc = new Scanner(System.in);
-        System.out.print("Enter a number to Questions Board: ");
-        int questionsNumber = sc.nextInt();
+        System.out.print("Enter a number to Questions Board or x to leave: ");
+        String data = sc.nextLine();
+        if(data.equals("x"))
+            return new Card();
+        int questionsNumber = Integer.parseInt(data);
         while(!match.getQuestionBoard().contains(match.getOriginalQuestionBoard().get(questionsNumber))) {
             System.out.print("\nSorry, this option is no longer available. ");
             System.out.print("Enter a number to Questions Board: ");
@@ -112,8 +115,11 @@ public class MatchView {
 
     public Card selectAnswar() {
         Scanner sc = new Scanner(System.in);
-        System.out.print("Enter a number to Answers Board: ");
-        int answersNumber = sc.nextInt();
+        System.out.print("Enter a number to Answers Board or x to leave: ");
+        String data = sc.nextLine();
+        if(data.equals("x"))
+            return new Card();
+        int answersNumber = Integer.parseInt(data);
         while(!match.getAnswerBoard().contains(match.getOriginalAnswerBoard().get(answersNumber))) {
             System.out.print("\nSorry, this option is no longer available. ");
             System.out.print("Enter a number to Answers Board: ");
