@@ -11,22 +11,36 @@ import java.util.Collections;
 import java.util.Scanner;
 
 public class MatchController {
+    private final Scanner sc;
+
+    private Match match;
+    private MatchView view;
 
     public MatchController() {
+        this.sc = new Scanner(System.in);
         setup();
+    }
+
+    public void setup() {
+        ArrayList<String> ids = new ArrayList<>(Collections.singletonList("1"));
+        int attempts = 1;
+        this.match = new Match(ids, attempts);
+        this.view = new MatchView(match);
     }
 
     public void playGame() {
         listCards();
+
         System.out.println("Type a list of cards id to play: ");
-        Scanner sc = new Scanner(System.in);
         String listOfCards = sc.nextLine();
+
         ArrayList<String> ids = new ArrayList<>(Arrays.asList(listOfCards.split(" ")));
+
         System.out.println("Enter the number of attempts you want to have: ");
         int attempts = sc.nextInt();
+
         this.match = new Match(ids, attempts);
         this.view = new MatchView(match);
-        sc.close();
         loop();
     }
 
@@ -48,12 +62,12 @@ public class MatchController {
     }
 
     public void addNewCard() {
-        Scanner sc = new Scanner(System.in);
         System.out.println("Type the question of the new card: ");
         String newCardQuestion = sc.nextLine();
+
         System.out.println("Type the answer of the new card: ");
         String newCardAnswer = sc.nextLine();
-        sc.close();
+
         Card card = new Card();
         card.setQuestion(newCardQuestion);
         card.setAnswer(newCardAnswer);
@@ -68,65 +82,58 @@ public class MatchController {
     }
 
     public void deleteCard() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Type the ID of the card to delete: ");
         try {
+            System.out.println("Type the ID of the card to delete: ");
             int deleteCardId = Integer.parseInt(sc.nextLine());
+
             CardDao dao = new CardDao();
             dao.delete(deleteCardId);
         } catch (Exception e) {
             System.out.println("Couldn't delete card");
         }
-        sc.close();
     }
 
     public void menu() {
         int option = view.displayMenuOptions();
         switch (option) {
-        case 0:
-            return;
-        case 1:
-            playGame();
-            menu();
-            break;
-        case 2:
-            listCards();
-            menu();
-            break;
-        case 3:
-            addNewCard();
-            menu();
-            break;
-        case 4:
-            deleteCard();
-            menu();
-            break;
-        default:
-            menu();
-            break;
+            case 0:
+                return;
+            case 1:
+                playGame();
+                menu();
+                break;
+            case 2:
+                listCards();
+                menu();
+                break;
+            case 3:
+                addNewCard();
+                menu();
+                break;
+            case 4:
+                deleteCard();
+                menu();
+                break;
+            default:
+                System.out.println("Invalid option. Please try again!");
+                menu();
+                break;
         }
-    }
-
-    public void setup() {
-        ArrayList<String> ids = new ArrayList<>(Collections.singletonList("1"));
-        int attempts = 1;
-        this.match = new Match(ids, attempts);
-        this.view = new MatchView(match);
     }
 
     public void loop() {
         while (!match.isWinner() && !match.isLoser()) {
             view.displayRemainingAttempts();
-            view.displayQuestionBoard();
-            view.displayAnswerBoard();
-            Card questionCard = view.selectQuestion();
+            view.displayBoard(match.getQuestionBoard(), match.getOriginalQuestionBoard(), "Question board");
+            view.displayBoard(match.getAnswerBoard(), match.getOriginalAnswerBoard(), "Answer board");
 
-            if (questionCard.getId() == -1) {
+            Card questionCard = view.selectQuestion();
+            if (questionCard.getId() == -1) { // exit the game when the player press x
                 break;
             }
-            Card answerCard = view.selectAnswar();
 
-            if (answerCard.getId() == -1) {
+            Card answerCard = view.selectAnswer();
+            if (answerCard.getId() == -1) { // exit the game when the player press x
                 break;
             }
 
@@ -136,18 +143,17 @@ public class MatchController {
             } else {
                 view.displayWrongAnswerScreen();
             }
+
             match.endTurn();
             view.waitScreen();
             view.clearScreen();
         }
+
         if (match.isWinner()) {
             view.displayWinnerScreen();
         }
-        if (match.isLoser()) {
+        else if (match.isLoser()) {
             view.displayLoserScreen();
         }
     }
-
-    private Match match;
-    private MatchView view;
 }

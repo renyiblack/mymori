@@ -1,17 +1,36 @@
 package models;
 
 import dao.CardDao;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class Match {
+    private ArrayList<Card> questionBoard;
+    private ArrayList<Card> originalQuestionBoard;
+    private ArrayList<Card> answerBoard;
+    private ArrayList<Card> originalAnswerBoard;
+    private int remainingAttempts;
+
+    public ArrayList<Card> getQuestionBoard() {
+        return questionBoard;
+    }
+    public ArrayList<Card> getAnswerBoard() {
+        return answerBoard;
+    }
+    public ArrayList<Card> getOriginalQuestionBoard() {
+        return originalQuestionBoard;
+    }
+    public ArrayList<Card> getOriginalAnswerBoard() {
+        return originalAnswerBoard;
+    }
+
     public Match(ArrayList<String> ids, int attempts) {
         this.remainingAttempts = attempts;
         ArrayList<Card> allCards;
         try {
             allCards = new CardDao().getAll();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Couldn't get cards");
             return;
         }
@@ -20,8 +39,7 @@ public class Match {
 
         try {
             ids.forEach(id -> selectedCards.add(allCards.get(Integer.parseInt(id) - 1)));
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Couldn't get cards");
             return;
         }
@@ -48,47 +66,21 @@ public class Match {
     }
 
     public boolean isWinner() {
-        int sizeA = this.questionBoard.size();
-        int sizeB = this.answerBoard.size();
-        return sizeA == 0 && sizeB == 0 && this.remainingAttempts > 0;
+        return this.questionBoard.size() == 0 && this.answerBoard.size() == 0 && this.remainingAttempts > 0;
     }
 
     public boolean isLoser() {
-        int sizeA = this.questionBoard.size();
-        int sizeB = this.answerBoard.size();
-        return sizeA > 0 && sizeB > 0 && this.remainingAttempts < 0 || this.remainingAttempts == 0;
+        return this.questionBoard.size() > 0 && this.answerBoard.size() > 0 && this.remainingAttempts < 0 ||
+                this.remainingAttempts == 0;
     }
 
-    public int getNumberCards() {
+    public int getNumberOfCards() {
         int sizeA = questionBoard.size();
         int sizeB = answerBoard.size();
-        if(sizeA == sizeB) {
+        if (sizeA == sizeB) {
             return sizeA;
         } else {
             return -1;
         }
     }
-
-    private int remainingAttempts;
-
-    public ArrayList<Card> getQuestionBoard() {
-        return questionBoard;
-    }
-
-    public ArrayList<Card> getAnswerBoard() {
-        return answerBoard;
-    }
-
-    public ArrayList<Card> getOriginalQuestionBoard() {
-        return originalQuestionBoard;
-    }
-
-    public ArrayList<Card> getOriginalAnswerBoard() {
-        return originalAnswerBoard;
-    }
-
-    private ArrayList<Card> questionBoard;
-    private ArrayList<Card> originalQuestionBoard;
-    private ArrayList<Card> answerBoard;
-    private ArrayList<Card> originalAnswerBoard;
 }

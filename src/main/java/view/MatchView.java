@@ -2,51 +2,42 @@ package view;
 
 import models.Card;
 import models.Match;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MatchView {
+    private final Match match;
+    private final Scanner sc;
+
     public MatchView(Match match) {
         this.match = match;
+        this.sc = new Scanner(System.in);
     }
 
     public int displayMenuOptions() {
-        Scanner sc = new Scanner(System.in);
         System.out.println("Welcome to memorize!");
         System.out.println("(0) Exit");
         System.out.println("(1) Play");
         System.out.println("(2) List cards in database");
         System.out.println("(3) Add new card in database");
         System.out.println("(4) Delete card in database");
-        System.out.print("Choose an option: ");
+
+        System.out.println("Choose an option: ");
         int option = sc.nextInt();
-        while (option != 0 && option != 1 && option != 2 && option != 3 && option != 4) {
-            System.out.print("\nSorry, this option is no longer available. ");
-            System.out.print("Enter a number available in menu: ");
+
+        while (option < 0 || option > 4) {
+            System.out.println("Invalid option. Please try again!");
+
+            System.out.println("Choose an option: ");
             option = sc.nextInt();
         }
-        sc.close();
+
         return option;
     }
 
-    public void displayQuestionBoard() {
-        ArrayList<Card> board = match.getQuestionBoard();
-        ArrayList<Card> originalBoard = match.getOriginalQuestionBoard();
-        System.out.print("Questions Board" + " = { ");
-        for (Card card : originalBoard) {
-            if (!board.contains(card)) {
-                System.out.print("@ ");
-            } else {
-                System.out.print(originalBoard.indexOf(card) + " ");
-            }
-        }
-        System.out.print("}\n");
-    }
-
-    public void displayAnswerBoard() {
-        ArrayList<Card> board = match.getAnswerBoard();
-        ArrayList<Card> originalBoard = match.getOriginalAnswerBoard();
-        System.out.print("Answers Board" + " = { ");
+    public void displayBoard(ArrayList<Card> board, ArrayList<Card> originalBoard, String boardName){
+        System.out.print(boardName + " = { ");
         for (Card card : originalBoard) {
             if (!board.contains(card)) {
                 System.out.print("@ ");
@@ -70,11 +61,11 @@ public class MatchView {
     }
 
     public void displayWinnerScreen() {
-        System.out.println("Winner!");
+        System.out.println("You won!");
     }
 
     public void displayLoserScreen() {
-        System.out.println("Loser!");
+        System.out.println("You lost!");
     }
 
     public void displayWrongAnswerScreen() {
@@ -90,10 +81,8 @@ public class MatchView {
     }
 
     public void waitScreen() {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Enter to continue!");
+        System.out.print("Press {Enter} to continue!");
         sc.nextLine();
-        sc.close();
     }
 
     public void displayRemainingAttempts() {
@@ -101,44 +90,43 @@ public class MatchView {
     }
 
     public Card selectQuestion() {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Enter a number to Questions Board or x to leave: ");
+        System.out.print("Enter a number referencing a card on the Question Board or {x} to leave: ");
+        String data = sc.nextLine();
+        if (data.equals("x")) {
+            return new Card();
+        }
+        else {
+            int questionsNumber = Integer.parseInt(data);
+            while (!match.getQuestionBoard().contains(match.getOriginalQuestionBoard().get(questionsNumber))) {
+                System.out.println("Invalid option. Please try again!");
+                System.out.println("Enter a number referencing a card on the Question Board or {x} to leave: ");
+                questionsNumber = sc.nextInt();
+            }
+
+            Card questionCard = match.getOriginalQuestionBoard().get(questionsNumber);
+            this.displayQuestionSide(questionCard);
+            return questionCard;
+        }
+    }
+
+    public Card selectAnswer() {
+        System.out.print("Enter a number referencing a card on the Question Board or {x} to leave: ");
         String data = sc.nextLine();
         if (data.equals("x")) {
             sc.close();
             return new Card();
         }
-        int questionsNumber = Integer.parseInt(data);
-        while (!match.getQuestionBoard().contains(match.getOriginalQuestionBoard().get(questionsNumber))) {
-            System.out.print("\nSorry, this option is no longer available. ");
-            System.out.print("Enter a number to Questions Board: ");
-            questionsNumber = sc.nextInt();
-        }
-        sc.close();
-        Card questionCard = match.getOriginalQuestionBoard().get(questionsNumber);
-        this.displayQuestionSide(questionCard);
-        return questionCard;
-    }
+        else {
+            int answersNumber = Integer.parseInt(data);
+            while (!match.getAnswerBoard().contains(match.getOriginalAnswerBoard().get(answersNumber))) {
+                System.out.println("Invalid option. Please try again!");
+                System.out.println("Enter a number referencing a card on the Question Board or {x} to leave: ");
+                answersNumber = sc.nextInt();
+            }
 
-    public Card selectAnswar() {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Enter a number to Answers Board or x to leave: ");
-        String data = sc.nextLine();
-        if (data.equals("x")) {
-            sc.close();
-            return new Card();
+            Card answerCard = match.getOriginalAnswerBoard().get(answersNumber);
+            this.displayAnswerSide(answerCard);
+            return answerCard;
         }
-        int answersNumber = Integer.parseInt(data);
-        while (!match.getAnswerBoard().contains(match.getOriginalAnswerBoard().get(answersNumber))) {
-            System.out.print("\nSorry, this option is no longer available. ");
-            System.out.print("Enter a number to Answers Board: ");
-            answersNumber = sc.nextInt();
-        }
-        sc.close();
-        Card answerCard = match.getOriginalAnswerBoard().get(answersNumber);
-        this.displayAnswerSide(answerCard);
-        return answerCard;
     }
-
-    private Match match;
 }
