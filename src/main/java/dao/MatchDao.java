@@ -1,17 +1,17 @@
 package dao;
 
 import models.Card;
-import repositories.DaoInterface;
 
 import java.sql.*;
 
+// TODO rewrite querys to match
 public class MatchDao implements DaoInterface<Card> {
     private Connection conn;
 
     @Override
     public void connect() {
         try {
-            String url = "jdbc:mysql://127.0.0.1:3306/?user=root";
+            String url = "jdbc:mysql://127.0.0.1:3306/mymori?user=dev&password=dev";
             conn = DriverManager.getConnection(url);
         } catch (SQLException e) {
             throw new Error("Failed connection!", e);
@@ -24,7 +24,7 @@ public class MatchDao implements DaoInterface<Card> {
 
         try {
             PreparedStatement preparedStatement = conn
-                    .prepareStatement("INSERT INTO cards (question, answer) VALUES (?, ?);");
+                    .prepareStatement("INSERT INTO matchs (question, answer) VALUES (?, ?);");
 
             preparedStatement.setString(1, card.getQuestion());
             preparedStatement.setString(2, card.getAnswer());
@@ -50,7 +50,7 @@ public class MatchDao implements DaoInterface<Card> {
 
         try {
             PreparedStatement preparedStatement = conn.prepareStatement(
-                    "select * from cards where cards.id = ?;");
+                    "select * from cards where matchs.id = ?;");
 
             preparedStatement.setInt(1, id);
 
@@ -67,7 +67,7 @@ public class MatchDao implements DaoInterface<Card> {
             if (conn != null) {
                 conn.close();
             }
-            throw new Error("Couldn't get card", e);
+            throw new Error("Couldn't get match", e);
         }
     }
 
@@ -77,7 +77,7 @@ public class MatchDao implements DaoInterface<Card> {
 
         try {
             PreparedStatement preparedStatement =
-                    conn.prepareStatement("UPDATE cards c SET c.question = ?, c.answer = ? WHERE c.id = ?;");
+                    conn.prepareStatement("UPDATE matchs c SET c.question = ?, c.answer = ? WHERE c.id = ?;");
 
             preparedStatement.setString(1, card.getQuestion());
             preparedStatement.setString(2, card.getAnswer());
@@ -105,7 +105,7 @@ public class MatchDao implements DaoInterface<Card> {
 
         try {
             PreparedStatement preparedStatement =
-                    conn.prepareStatement("DELETE FROM cards WHERE cards.id = ?;");
+                    conn.prepareStatement("DELETE FROM matchs WHERE matchs.id = ?;");
 
             preparedStatement.setInt(1, id);
 

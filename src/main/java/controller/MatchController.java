@@ -1,10 +1,10 @@
 package controller;
+
 import dao.CardDao;
 import models.Card;
 import models.Match;
 import view.MatchView;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -26,6 +26,7 @@ public class MatchController {
         int attempts = sc.nextInt();
         this.match = new Match(ids, attempts);
         this.view = new MatchView(match);
+        sc.close();
         loop();
     }
 
@@ -52,6 +53,7 @@ public class MatchController {
         String newCardQuestion = sc.nextLine();
         System.out.println("Type the answer of the new card: ");
         String newCardAnswer = sc.nextLine();
+        sc.close();
         Card card = new Card();
         card.setQuestion(newCardQuestion);
         card.setAnswer(newCardAnswer);
@@ -59,8 +61,7 @@ public class MatchController {
         try {
             CardDao dao = new CardDao();
             dao.insert(card);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Couldn't save card");
         }
 
@@ -73,33 +74,36 @@ public class MatchController {
             int deleteCardId = Integer.parseInt(sc.nextLine());
             CardDao dao = new CardDao();
             dao.delete(deleteCardId);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Couldn't delete card");
         }
+        sc.close();
     }
 
     public void menu() {
         int option = view.displayMenuOptions();
         switch (option) {
-            case 0:
-                return;
-            case 1:
-                playGame();
-                menu();
-                break;
-            case 2:
-                listCards();
-                menu();
-                break;
-            case 3:
-                addNewCard();
-                menu();
-                break;
-            case 4:
-                deleteCard();
-                menu();
-                break;
+        case 0:
+            return;
+        case 1:
+            playGame();
+            menu();
+            break;
+        case 2:
+            listCards();
+            menu();
+            break;
+        case 3:
+            addNewCard();
+            menu();
+            break;
+        case 4:
+            deleteCard();
+            menu();
+            break;
+        default:
+            menu();
+            break;
         }
     }
 
@@ -111,23 +115,22 @@ public class MatchController {
     }
 
     public void loop() {
-        while(!match.isWinner() && !match.isLoser()) {
+        while (!match.isWinner() && !match.isLoser()) {
             view.displayRemainingAttempts();
             view.displayQuestionBoard();
             view.displayAnswerBoard();
             Card questionCard = view.selectQuestion();
 
-            if(questionCard.getId() == -1) {
+            if (questionCard.getId() == -1) {
                 break;
             }
             Card answerCard = view.selectAnswar();
 
-            if(answerCard.getId() == -1) {
+            if (answerCard.getId() == -1) {
                 break;
             }
 
-
-            if(questionCard.equals(answerCard)) {
+            if (questionCard.equals(answerCard)) {
                 view.displayRightAnswerScreen();
                 match.removeCard(questionCard.getId());
             } else {
@@ -137,10 +140,10 @@ public class MatchController {
             view.waitScreen();
             view.clearScreen();
         }
-        if(match.isWinner()) {
+        if (match.isWinner()) {
             view.displayWinnerScreen();
         }
-        if(match.isLoser()) {
+        if (match.isLoser()) {
             view.displayLoserScreen();
         }
     }

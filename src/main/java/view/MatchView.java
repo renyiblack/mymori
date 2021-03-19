@@ -1,5 +1,5 @@
 package view;
-import controller.MatchController;
+
 import models.Card;
 import models.Match;
 import java.util.ArrayList;
@@ -20,11 +20,12 @@ public class MatchView {
         System.out.println("(4) Delete card in database");
         System.out.print("Choose an option: ");
         int option = sc.nextInt();
-        while(option!=0 && option!=1 && option!=2 && option!=3 && option!=4) {
+        while (option != 0 && option != 1 && option != 2 && option != 3 && option != 4) {
             System.out.print("\nSorry, this option is no longer available. ");
             System.out.print("Enter a number available in menu: ");
             option = sc.nextInt();
         }
+        sc.close();
         return option;
     }
 
@@ -33,7 +34,7 @@ public class MatchView {
         ArrayList<Card> originalBoard = match.getOriginalQuestionBoard();
         System.out.print("Questions Board" + " = { ");
         for (Card card : originalBoard) {
-            if(!board.contains(card)) {
+            if (!board.contains(card)) {
                 System.out.print("@ ");
             } else {
                 System.out.print(originalBoard.indexOf(card) + " ");
@@ -41,12 +42,13 @@ public class MatchView {
         }
         System.out.print("}\n");
     }
+
     public void displayAnswerBoard() {
         ArrayList<Card> board = match.getAnswerBoard();
         ArrayList<Card> originalBoard = match.getOriginalAnswerBoard();
         System.out.print("Answers Board" + " = { ");
         for (Card card : originalBoard) {
-            if(!board.contains(card)) {
+            if (!board.contains(card)) {
                 System.out.print("@ ");
             } else {
                 System.out.print(originalBoard.indexOf(card) + " ");
@@ -55,13 +57,14 @@ public class MatchView {
         System.out.print("}\n");
     }
 
-
     public void displayQuestionSide(Card card) {
         System.out.println("Question: " + card.getQuestion());
     }
+
     public void displayAnswerSide(Card card) {
         System.out.println("Answer: " + card.getAnswer());
     }
+
     public void displayId(Card card) {
         System.out.println("ID: " + card.getId());
     }
@@ -90,6 +93,7 @@ public class MatchView {
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter to continue!");
         sc.nextLine();
+        sc.close();
     }
 
     public void displayRemainingAttempts() {
@@ -100,14 +104,17 @@ public class MatchView {
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter a number to Questions Board or x to leave: ");
         String data = sc.nextLine();
-        if(data.equals("x"))
+        if (data.equals("x")) {
+            sc.close();
             return new Card();
+        }
         int questionsNumber = Integer.parseInt(data);
-        while(!match.getQuestionBoard().contains(match.getOriginalQuestionBoard().get(questionsNumber))) {
+        while (!match.getQuestionBoard().contains(match.getOriginalQuestionBoard().get(questionsNumber))) {
             System.out.print("\nSorry, this option is no longer available. ");
             System.out.print("Enter a number to Questions Board: ");
             questionsNumber = sc.nextInt();
         }
+        sc.close();
         Card questionCard = match.getOriginalQuestionBoard().get(questionsNumber);
         this.displayQuestionSide(questionCard);
         return questionCard;
@@ -117,14 +124,17 @@ public class MatchView {
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter a number to Answers Board or x to leave: ");
         String data = sc.nextLine();
-        if(data.equals("x"))
+        if (data.equals("x")) {
+            sc.close();
             return new Card();
+        }
         int answersNumber = Integer.parseInt(data);
-        while(!match.getAnswerBoard().contains(match.getOriginalAnswerBoard().get(answersNumber))) {
+        while (!match.getAnswerBoard().contains(match.getOriginalAnswerBoard().get(answersNumber))) {
             System.out.print("\nSorry, this option is no longer available. ");
             System.out.print("Enter a number to Answers Board: ");
             answersNumber = sc.nextInt();
         }
+        sc.close();
         Card answerCard = match.getOriginalAnswerBoard().get(answersNumber);
         this.displayAnswerSide(answerCard);
         return answerCard;

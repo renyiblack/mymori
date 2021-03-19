@@ -1,7 +1,6 @@
 package dao;
 
 import models.Card;
-import repositories.DaoInterface;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,7 +11,7 @@ public class CardDao implements DaoInterface<Card> {
     @Override
     public void connect() {
         try {
-            String url = "jdbc:mysql://127.0.0.1:3306/mymori?user=root&password=admin";
+            String url = "jdbc:mysql://127.0.0.1:3306/mymori?user=dev&password=dev";
             conn = DriverManager.getConnection(url);
         } catch (SQLException e) {
             throw new Error("Failed connection!", e);
@@ -30,7 +29,8 @@ public class CardDao implements DaoInterface<Card> {
             preparedStatement.setString(1, card.getQuestion());
             preparedStatement.setString(2, card.getAnswer());
 
-            int rs = preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
+
             if (conn != null) {
                 conn.close();
             }
