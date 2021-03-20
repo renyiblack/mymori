@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0"
+            prefWidth="425.0"
+            style="-fx-background-color: #252525; -fx-background-radius: 15; -fx-border-radius: 15; -fx-border-color: #151515; -fx-border-width: 5;"
+            xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.EndDialogController">
+    <HBox layoutX="34.0" layoutY="32.0" prefHeight="200.0" prefWidth="425.0" AnchorPane.bottomAnchor="0.0"
+          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <Label prefHeight="32.0" prefWidth="309.0"
+               style="-fx-text-fill: linear-gradient(from 0% 93% to 0% 100%, #a34313 0%, #903b12 100%),        #9d4024,        #d86e3a,        radial-gradient(center 50% 50%, radius 100%, #d86e3a, #c54e2c); -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 );"
+               text="             Game Ended!" textFill="WHITE" HBox.hgrow="ALWAYS">
+            <font>
+                <Font size="22.0"/>
+            </font>
+            <HBox.margin>
+                <Insets left="70.0" top="60.0"/>
+            </HBox.margin>
+        </Label>
+    </HBox>
+    <Button fx:id="goBack" focusTraversable="false" layoutX="155.0" layoutY="121.0" mnemonicParsing="false"
+            onAction="#goBackClicked" prefHeight="50.0" prefWidth="122.0" stylesheets="@css/buttons.css"
+            text="Go back"/>
+</AnchorPane>

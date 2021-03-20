@@ -7,9 +7,9 @@ plugins {
 group 'mymori'
 version '1.0-SNAPSHOT'
 
-mainClassName = 'Main'
+// mainClassName = 'Main'
 
-sourceCompatibility = 1.8
+// sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
@@ -50,9 +50,9 @@ test {
 //             '--module-path', classpath.asPath,
 //             '--add-modules', 'javafx.controls',
 //             '--add-modules', 'javafx.fxml',
-//             '--add-modules', 'javafx.web',
-//             '--add-modules', 'javafx.graphics',
-//             '--add-modules', 'javafx.media'
+////             '--add-modules', 'javafx.web',
+////             '--add-modules', 'javafx.graphics',
+////             '--add-modules', 'javafx.media'
 //         ]
 //         classpath = files()
 //     }

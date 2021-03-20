@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="menu" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #303030;"
+            xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.MenuController">
+    <GridPane layoutX="300.0" layoutY="73.0" prefHeight="600.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0"
+              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <columnConstraints>
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="409.0"/>
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="159.0"/>
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="232.0"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="236.0" vgrow="ALWAYS"/>
+            <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="260.0" vgrow="ALWAYS"/>
+            <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="57.0" vgrow="ALWAYS"/>
+        </rowConstraints>
+    </GridPane>
+    <HBox alignment="BOTTOM_RIGHT" layoutX="96.0" layoutY="297.0" prefHeight="103.0" prefWidth="800.0"
+          AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+          AnchorPane.topAnchor="297.0"/>
+    <VBox fx:id="vbox" alignment="CENTER" layoutY="72.0" maxHeight="-Infinity" maxWidth="-Infinity"
+          minHeight="-Infinity" minWidth="-Infinity" prefHeight="472.0" prefWidth="800.0" spacing="20.0"
+          AnchorPane.bottomAnchor="56.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+          AnchorPane.topAnchor="72.0">
+        <padding>
+            <Insets bottom="50.0" left="50.0" right="50.0" top="50.0"/>
+        </padding>
+        <ImageView fx:id="cards" fitHeight="173.0" fitWidth="446.0" pickOnBounds="true" preserveRatio="true">
+            <VBox.margin>
+                <Insets/>
+            </VBox.margin>
+            <Image url="@Images/cards.png"/>
+        </ImageView>
+        <Button fx:id="playButton" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" maxHeight="80.0"
+                maxWidth="400.0" minWidth="200.0" mnemonicParsing="false" onAction="#playClicked" prefHeight="53.0"
+                prefWidth="179.0" stylesheets="@css/buttons.css" text="PLAY" VBox.vgrow="ALWAYS">
+            <VBox.margin>
+                <Insets left="200.0" right="200.0"/>
+            </VBox.margin>
+        </Button>
+        <Button fx:id="exitButton" focusTraversable="false" maxHeight="80.0" maxWidth="400.0" minWidth="200.0"
+                mnemonicParsing="false" onAction="#exitClicked" prefHeight="53.0" prefWidth="179.0"
+                stylesheets="@css/buttons.css" text="EXIT" VBox.vgrow="ALWAYS">
+            <VBox.margin>
+                <Insets left="200.0" right="200.0"/>
+            </VBox.margin>
+        </Button>
+    </VBox>
+</AnchorPane>
