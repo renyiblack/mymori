@@ -92,7 +92,7 @@ public class GameController {
         scaleTransition.play();
         scaleTransition.setOnFinished(event -> {
             imageView.setScaleX(1);
-            imageView.setImage(card.getValue());
+            imageView.setImage(card.getQuestion());
         });
 
 
@@ -245,8 +245,11 @@ public class GameController {
                 times++;
                 j++;
             }
-            Image value = new Image("Images/Cards/" + j + ".png");
-            Card image2 = new Card(value, theme, times);
+
+            Image question = new Image("Images/Cards/" + j + ".png");
+            Image answer = new Image("Images/Cards/" + j + ".png");
+
+            Card image2 = new Card(times, question, answer, theme);
             cards.add(image2);
         }
     }
