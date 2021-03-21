@@ -13,7 +13,6 @@ import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 import utils.Strings;
 import models.Card;
-import models.Controller;
 import models.Score;
 
 import java.sql.SQLException;

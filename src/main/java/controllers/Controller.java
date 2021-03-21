@@ -1,4 +1,4 @@
-package models;
+package controllers;
 
 import daos.CardDao;
 import javafx.fxml.FXML;
@@ -15,6 +15,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import models.Card;
 import utils.Strings;
 
 import java.io.IOException;

@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
 import utils.Strings;
 import models.Card;
-import models.Controller;
 
 import java.sql.SQLException;
 

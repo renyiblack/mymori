@@ -14,7 +14,6 @@ import javafx.stage.Stage;
 import utils.draw.Drawing;
 import utils.Strings;
 import models.Card;
-import models.Controller;
 
 import java.io.File;
 import java.io.IOException;

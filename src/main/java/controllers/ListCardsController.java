@@ -6,7 +6,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 import models.Card;
-import models.Controller;
 
 public class ListCardsController  extends Controller {
     public ListCardsController() {

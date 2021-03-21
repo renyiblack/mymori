@@ -1,6 +1,5 @@
 package utils.draw;
 
-import models.Controller;
 import utils.Strings;
 
 import javax.swing.*;
