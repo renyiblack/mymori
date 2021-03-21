@@ -17,6 +17,7 @@ public class ListCardsController  extends Controller {
         startGame();
     }
 
+    @Override
     public void clickEvent(ImageView imageView, Card card) {
         card.setFlipped(!card.isFlipped());
         cardImage = imageView;

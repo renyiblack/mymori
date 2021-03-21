@@ -86,6 +86,7 @@ public class GameController extends Controller {
             }
     }
 
+    @Override
     public void clickEvent(ImageView imageView, Card card) {
         cardsMatched = false;
         clicks++;
