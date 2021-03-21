@@ -11,7 +11,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import utils.Drawing;
+import utils.draw.Drawing;
 import utils.Strings;
 import models.Card;
 import models.Controller;
@@ -30,6 +30,8 @@ public class MenuController {
     public Button listCardsButton;
     @FXML
     public Button removeCardsButton;
+    @FXML
+    public Button drawCardButton;
     @FXML
     private Button exitButton, playButton;
     @FXML
@@ -60,16 +62,21 @@ public class MenuController {
     }
 
     @FXML
-    private void addCardClicked() {
-//        Drawing drawing = new Drawing();
-//        drawing.draw();
+    private void drawCardClicked() {
+        Drawing drawing = new Drawing();
+        drawing.draw();
+    }
 
+    @FXML
+    private void addCardClicked() {
         File questionChooser, answerChooser;
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG files(*.png)", "*.png"));
         fileChooser.setTitle(Strings.QUESTION_CHOOSER_TITLE);
+        Controller.showDialog(Strings.CARD_CHOOSER, Strings.QUESTION_CHOOSER);
         questionChooser = fileChooser.showOpenDialog(null);
+        Controller.showDialog(Strings.CARD_CHOOSER, Strings.ANSWER_CHOOSER);
         fileChooser.setTitle(Strings.ANSWER_CHOOSER_TITLE);
         answerChooser = fileChooser.showOpenDialog(null);
 

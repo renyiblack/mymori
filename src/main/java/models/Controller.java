@@ -15,6 +15,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import utils.Strings;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -49,12 +50,12 @@ public class Controller {
 
     public void player() {
         if (cards.size() > imageViews.size()) {
-            showDialog("Error", "Game can only have 12 cards! Removing last added one.");
+            showDialog(Strings.ERROR, Strings.MAX_CARDS_REACHED);
             CardDao cardDao = new CardDao();
             try {
                 cardDao.delete(cards.get(cards.size() - 1).getId());
             } catch (SQLException e) {
-                showDialog("Error", "Couldn't delete last card.");
+                showDialog(Strings.ERROR, Strings.ERROR_DELETE_CARD);
             }
         } else
             for (int i = 0; i < cards.size(); i++) {

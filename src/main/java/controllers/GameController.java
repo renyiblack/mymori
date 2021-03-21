@@ -63,7 +63,7 @@ public class GameController extends Controller {
 
     @Override
     public void player() {
-        if (answerCards.size() > imageViews.size()) {
+        if (answerCards.size() > 12) {
             showDialog(Strings.ERROR, Strings.MAX_CARDS_REACHED);
             CardDao cardDao = new CardDao();
             try {
@@ -73,6 +73,8 @@ public class GameController extends Controller {
             }
         } else if (answerCards.isEmpty() && imageViews.isEmpty())
             showDialog(Strings.ERROR, Strings.ERROR_LOAD_CARDS);
+        else if (answerCards.size() < 12)
+            showDialog(Strings.ERROR, Strings.TOO_FEW_CARDS);
         else
             for (int i = 0; i < imageViews.size(); i++) {
                 final ImageView imageView = imageViews.get(i);
@@ -199,7 +201,7 @@ public class GameController extends Controller {
     }
 
     public void setImages() {
-        if (answerCards.size() <= 12)
+        if (answerCards.size() == 12)
             for (int i = 0; i < answerCards.size(); i++) {
                 imageViews.get(i).setImage(answerCards.get(i).getBackground());
 

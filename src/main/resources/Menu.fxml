@@ -44,6 +44,13 @@
                 <Insets left="200.0" right="200.0"/>
             </VBox.margin>
         </Button>
+        <Button fx:id="drawCardButton" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false"
+                maxHeight="80.0" maxWidth="400.0" minWidth="200.0" mnemonicParsing="false" onAction="#drawCardClicked"
+                prefHeight="53.0" prefWidth="179.0" stylesheets="@css/buttons.css" text="DRAW CARD" VBox.vgrow="ALWAYS">
+            <VBox.margin>
+                <Insets left="200.0" right="200.0"/>
+            </VBox.margin>
+        </Button>
         <Button fx:id="addCardButton" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false"
                 maxHeight="80.0" maxWidth="400.0" minWidth="200.0" mnemonicParsing="false" onAction="#addCardClicked"
                 prefHeight="53.0" prefWidth="179.0" stylesheets="@css/buttons.css" text="ADD CARD" VBox.vgrow="ALWAYS">

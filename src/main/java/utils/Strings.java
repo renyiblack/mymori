@@ -10,6 +10,9 @@ public abstract class Strings {
     public static final String ANSWER_CHOOSER_TITLE = "Answer Chooser";
     public static final String FOUND_PAIRS = "Found Pairs: ";
     public static final String MOVES = "Moves: ";
+    public static final String CARD_CHOOSER = "Choose a card";
+    public static final String QUESTION_CHOOSER = "Please choose the question";
+    public static final String ANSWER_CHOOSER = "Please choose the answer";
 
     // ERRORS
     public static final String ERROR = "Error";
@@ -19,6 +22,7 @@ public abstract class Strings {
     public static final String ERROR_SAVE_CARD = "Couldn't save card!";
     public static final String ERROR_LOAD_CARDS = "Couldn't load cards!";
     public static final String MAX_CARDS_REACHED = "Game can only have 12 cards!";
+    public static final String TOO_FEW_CARDS = "Game needs to have 12 cards! Please add more";
     public static final String INVALID_QUESTION_ANSWER = "Invalid Question or Answer!";
     public static final String INVALID_QUESTION_ANSWER_SIZE = "Question or Answer is not a valid image (500x726)";
     public static final String FAILED_CONNECTION = "Failed connection!";
