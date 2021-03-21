@@ -10,10 +10,7 @@ import javafx.stage.Stage;
 
 public class ExitDialogController {
     @FXML
-    private Button yes, no;
-
-    @FXML
-    private Label exit;
+    private Button no;
 
     @FXML
     private void yesClicked() {

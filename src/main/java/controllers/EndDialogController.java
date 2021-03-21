@@ -18,11 +18,14 @@ public class EndDialogController {
         Stage dialog = (Stage) goBack.getScene().getWindow();
         Parent root = FXMLLoader.load(ClassLoader.getSystemResource("Menu.fxml"));
         Stage stage = (Stage) dialog.getOwner().getScene().getWindow();
-        stage.setTitle("Mymori Game");
         Scene scene = new Scene(root, 1280, 720);
+
+        stage.setTitle("Mymori Game");
         stage.setScene(scene);
         stage.getScene().setRoot(root);
+
         root.setEffect(null);
+
         dialog.close();
     }
 }

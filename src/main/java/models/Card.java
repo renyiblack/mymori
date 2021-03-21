@@ -11,6 +11,8 @@ public class Card {
     private final Image question;
     private final Image answer;
     private final Image background;
+    private boolean isFlipped;
+    private boolean isAnswer;
     private final int id;
 
     public Card(int id, Image question, Image answer, Image background) {
@@ -18,13 +20,15 @@ public class Card {
         this.answer = answer;
         this.background = background;
         this.id = id;
+        this.isFlipped = false;
+        this.isAnswer = true;
     }
 
-    public static Card fromRs(ResultSet rs) throws SQLException, IOException {
-        rs.getBlob("question");
-        rs.getBlob("answer");
+    public static Card fromRs(ResultSet rs) throws SQLException {
         InputStream questionImg;
         InputStream answerImg;
+        rs.getBlob("question");
+        rs.getBlob("answer");
         questionImg = rs.getBlob("question").getBinaryStream();
         answerImg = rs.getBlob("answer").getBinaryStream();
 
@@ -39,11 +43,27 @@ public class Card {
         return answer;
     }
 
+    public boolean getIsAnswer() {
+        return isAnswer;
+    }
+
     public Image getBackground() {
         return background;
     }
 
     public int getId() {
         return id;
+    }
+
+    public boolean isFlipped() {
+        return isFlipped;
+    }
+
+    public void setFlipped(boolean flipped) {
+        isFlipped = flipped;
+    }
+
+    public void setAnswer(boolean answer) {
+        isAnswer = answer;
     }
 }

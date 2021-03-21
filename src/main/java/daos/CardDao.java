@@ -77,11 +77,11 @@ public class CardDao implements DaoInterface<Card> {
             }
 
             return card;
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             if (conn != null) {
                 conn.close();
             }
-            throw new Error("Couldn't get card", e);
+            throw new SQLException("Couldn't get card", e);
         }
     }
 
@@ -104,11 +104,11 @@ public class CardDao implements DaoInterface<Card> {
             }
 
             return cards;
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             if (conn != null) {
                 conn.close();
             }
-            throw new Error("Couldn't get card", e);
+            throw new SQLException("Couldn't get cards", e);
         }
     }
 
@@ -135,8 +135,7 @@ public class CardDao implements DaoInterface<Card> {
             if (conn != null) {
                 conn.close();
             }
-
-            return false;
+            throw new SQLException("Couldn't update card", e);
         }
     }
 
@@ -161,8 +160,7 @@ public class CardDao implements DaoInterface<Card> {
             if (conn != null) {
                 conn.close();
             }
-
-            return false;
+            throw new SQLException("Couldn't delete card", e);
         }
     }
 }

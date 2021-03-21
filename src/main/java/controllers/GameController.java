@@ -1,5 +1,6 @@
 package controllers;
 
+import daos.CardDao;
 import javafx.animation.KeyFrame;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
@@ -7,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.GaussianBlur;
@@ -22,6 +24,7 @@ import models.Card;
 import models.Score;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -38,23 +41,17 @@ public class GameController {
     public ArrayList<ImageView> imageViews, foundCards;
     public ImageView imageCard1, imageCard2;
     public Card card1, card2;
-    public ArrayList<Card> cards;
+    public ArrayList<Card> answerCards, questionCards;
     public Score score;
     public Boolean cardsMatched;
     public int id1, id2;
 
-    private final Image theme;
     private int clicks = 0;
 
-    private final int size = 24;
-    private final int rows = 4;
-    private final int selectCards = 2;
-    private final double width = 90, height = 130;
-
     public GameController() {
-        theme = new Image("Images/Cards/backgroundSmall.png");
         imageViews = new ArrayList<>();
-        cards = new ArrayList<>();
+        answerCards = new ArrayList<>();
+        questionCards = new ArrayList<>();
         foundCards = new ArrayList<>();
         score = new Score();
         cardsMatched = false;
@@ -66,20 +63,33 @@ public class GameController {
     }
 
     public void startGame() {
-        createImageViews(grid, imageViews);
-        createCards(cards);
-        shuffleCards(imageViews);
-        setImages(imageViews, cards);
+        createImageViews();
+        createCards();
+        shuffleCards();
+        setImages();
 
         player();
     }
 
     public void player() {
-        for (int i = 0; i < imageViews.size(); i++) {
-            final ImageView imageView = imageViews.get(i);
-            final Card card = cards.get(i);
-            imageViews.get(i).setOnMouseClicked(event -> clickEvent(imageView, card));
-        }
+        if (answerCards.size() > imageViews.size()) {
+            showDialog("Error", "Game can only have 12 cards! Removing last added one.");
+            CardDao cardDao = new CardDao();
+            try {
+                cardDao.delete(answerCards.get(answerCards.size() - 1).getId());
+            } catch (SQLException e) {
+                showDialog("Error", "Couldn't delete last card.");
+            }
+        } else
+            for (int i = 0; i < imageViews.size(); i++) {
+                final ImageView imageView = imageViews.get(i);
+                Card card;
+                if (i < 12)
+                    card = answerCards.get(i);
+                else
+                    card = questionCards.get(i - 12);
+                imageViews.get(i).setOnMouseClicked(event -> clickEvent(imageView, card));
+            }
     }
 
     public void clickEvent(ImageView imageView, Card card) {
@@ -92,7 +102,10 @@ public class GameController {
         scaleTransition.play();
         scaleTransition.setOnFinished(event -> {
             imageView.setScaleX(1);
-            imageView.setImage(card.getQuestion());
+            if (card.getIsAnswer())
+                imageView.setImage(card.getAnswer());
+            else
+                imageView.setImage(card.getQuestion());
         });
 
 
@@ -100,8 +113,7 @@ public class GameController {
             id1 = card.getId();
             imageCard1 = imageView;
             card1 = card;
-        }
-        if (clicks == 2) {
+        } else if (clicks == 2) {
             id2 = card.getId();
             imageCard2 = imageView;
             card2 = card;
@@ -135,13 +147,14 @@ public class GameController {
                 }));
                 timeline.play();
             }
-            if (foundCards.size() == size) {
+
+            if (foundCards.size() == 24) {
                 Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1.2), event -> deleteCards(grid)));
                 timeline.play();
                 try {
                     gameEnded();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    showDialog("Error", "Couldn't end game!");
                 }
             }
             clicks = 0;
@@ -208,16 +221,21 @@ public class GameController {
         stage.getScene().setRoot(root);
     }
 
-    public void createImageViews(GridPane grid, ArrayList<ImageView> imageViews) {
+    public void createImageViews() {
         grid.setHgap(10);
         grid.setVgap(10);
+
+        int rows = 4;
+        double height = 130;
+        int columns = 6;
+        double width = 90;
+
         for (int i = 0; i < rows; i++) {
             RowConstraints row = new RowConstraints(height);
             row.setMinHeight(Double.MIN_VALUE);
             row.setVgrow(Priority.ALWAYS);
             grid.getRowConstraints().add(row);
         }
-        int columns = 6;
         for (int i = 0; i < columns; i++) {
             ColumnConstraints column = new ColumnConstraints(width);
             column.setMinWidth(Double.MIN_VALUE);
@@ -237,30 +255,37 @@ public class GameController {
         }
     }
 
-    public void createCards(ArrayList<Card> cards) {
-        int times = 0;
-        int j = 0;
-        for (int i = 1; i <= size; i++) {
-            if (i % selectCards == 1) {
-                times++;
-                j++;
+    private void showDialog(String type, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(type);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    public void createCards() {
+        CardDao cardDao = new CardDao();
+        try {
+            ArrayList<Card> dbCards = cardDao.getAll();
+            for (Card card : dbCards) {
+                answerCards.add(new Card(card.getId(), card.getQuestion(), card.getAnswer(), new Image("Images/Cards/backgroundSmall.png")));
+                questionCards.add(new Card(card.getId(), card.getQuestion(), card.getAnswer(), new Image("Images/Cards/backgroundSmall.png")));
             }
-
-            Image question = new Image("Images/Cards/" + j + ".png");
-            Image answer = new Image("Images/Cards/" + j + ".png");
-
-            Card image2 = new Card(times, question, answer, theme);
-            cards.add(image2);
+        } catch (SQLException e) {
+            showDialog("Error", "Couldn't load cards!");
         }
     }
 
-    public void setImages(ArrayList<ImageView> imageViews, ArrayList<Card> cards) {
-        for (int i = 0; i < imageViews.size(); i++) {
-            imageViews.get(i).setImage(cards.get(i).getBackground());
-        }
+    public void setImages() {
+        if (answerCards.size() <= 12)
+            for (int i = 0; i < answerCards.size(); i++) {
+                imageViews.get(i).setImage(answerCards.get(i).getBackground());
+                questionCards.get(i).setAnswer(false);
+                imageViews.get(i + 12).setImage(questionCards.get(i).getBackground());
+            }
     }
 
-    public void shuffleCards(ArrayList<ImageView> imageViews) {
+    public void shuffleCards() {
         Collections.shuffle(imageViews);
     }
 }
