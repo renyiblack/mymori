@@ -55,21 +55,21 @@ public class Button extends AbstractAction {
                 break;
             case SAVE_QUESTION:
                 super.putValue(Action.NAME, "save Q.");
-                lineColor = drawingCanvas.lineColor;
+                lineColor = DrawingCanvas.ORANGE;
                 function = Functions.SAVE_QUESTION;
                 break;
             case SAVE_ANSWER:
                 super.putValue(Action.NAME, "save A.");
-                lineColor = drawingCanvas.lineColor;
+                lineColor = DrawingCanvas.ORANGE;
                 function = Functions.SAVE_ANSWER;
                 break;
             case CLEAR:
                 super.putValue(Action.NAME, "clear");
-                lineColor = drawingCanvas.lineColor;
+                lineColor = DrawingCanvas.ORANGE;
                 function = Functions.CLEAR;
                 break;
             default:
-                lineColor = drawingCanvas.lineColor;
+                lineColor = DrawingCanvas.ORANGE;
                 function = Functions.COLOR;
                 break;
         }
@@ -96,6 +96,8 @@ public class Button extends AbstractAction {
                 break;
             case CLEAR:
                 drawingCanvas.clear();
+                break;
+            default:
                 break;
         }
     }
