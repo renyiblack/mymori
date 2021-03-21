@@ -11,6 +11,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import utils.Drawing;
 import utils.Strings;
 import models.Card;
 import models.Controller;
@@ -60,6 +61,9 @@ public class MenuController {
 
     @FXML
     private void addCardClicked() {
+//        Drawing drawing = new Drawing();
+//        drawing.draw();
+
         File questionChooser, answerChooser;
 
         FileChooser fileChooser = new FileChooser();
