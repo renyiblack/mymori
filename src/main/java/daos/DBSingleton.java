@@ -1,5 +1,7 @@
 package daos;
 
+import utils.Strings;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -10,15 +12,13 @@ public class DBSingleton {
 
     private void connect() throws SQLException {
         try {
-            String url = "jdbc:mysql://127.0.0.1:3306/mymori?user=dev&password=dev";
-            connection = DriverManager.getConnection(url);
+            connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/mymori?user=dev&password=dev");
         } catch (SQLException e) {
-            throw new SQLException("Failed connection!");
+            throw new SQLException(Strings.FAILED_CONNECTION);
         }
     }
 
     Connection getConnection() throws SQLException {
-
         if (connection == null || connection.isClosed())
             connect();
         return connection;

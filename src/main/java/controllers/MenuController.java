@@ -11,6 +11,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import utils.Strings;
 import models.Card;
 import models.Controller;
 
@@ -43,7 +44,7 @@ public class MenuController {
 
     @FXML
     private void playClicked() throws IOException {
-        Parent root = FXMLLoader.load(ClassLoader.getSystemResource("Game.fxml"));
+        Parent root = FXMLLoader.load(ClassLoader.getSystemResource(Strings.GAME_FXML));
         Stage stage = (Stage) playButton.getScene().getWindow();
         stage.getScene().setRoot(root);
     }
@@ -51,9 +52,9 @@ public class MenuController {
     @FXML
     private void exitClicked() {
         try {
-            Controller.showImportantDialog(exitButton, menu, "ExitDialog.fxml", "Exit");
+            Controller.showImportantDialog(exitButton, menu, Strings.EXIT_DIALOG_FXML, Strings.EXIT_DIALOG_TITLE);
         } catch (Exception e) {
-            Controller.showDialog("Error", "Couldn't close game!");
+            Controller.showDialog(Strings.ERROR, Strings.ERROR_CLOSE_GAME);
         }
     }
 
@@ -63,42 +64,42 @@ public class MenuController {
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG files(*.png)", "*.png"));
-        fileChooser.setTitle("Question Chooser");
+        fileChooser.setTitle(Strings.QUESTION_CHOOSER_TITLE);
         questionChooser = fileChooser.showOpenDialog(null);
-        fileChooser.setTitle("Answer Chooser");
+        fileChooser.setTitle(Strings.ANSWER_CHOOSER_TITLE);
         answerChooser = fileChooser.showOpenDialog(null);
 
         if (questionChooser == null || answerChooser == null) {
-            Controller.showDialog("Error", "Invalid Question or Answer!");
+            Controller.showDialog(Strings.ERROR, Strings.INVALID_QUESTION_ANSWER);
         } else {
             Image question = new Image(questionChooser.toURI().toString());
             Image answer = new Image(answerChooser.toURI().toString());
             if ((question.getHeight() != 726 && question.getWidth() != 500) || (answer.getHeight() != 726 && answer.getWidth() != 500)) {
-                Controller.showDialog("Error", "Question or Answer is not a valid image (500x726)");
+                Controller.showDialog(Strings.ERROR, Strings.INVALID_QUESTION_ANSWER_SIZE);
             } else {
                 CardDao cardDao = new CardDao();
                 try {
                     ArrayList<Card> cards = cardDao.getAll();
                     if (cards.size() < 12) {
-                        cardDao.insert(new Card(0, question, answer, new Image("Images/Cards/backgroundSmall.png")));
-                        Controller.showDialog("Ok", "Card successfully saved!");
+                        cardDao.insert(new Card(0, question, answer, new Image(Strings.CARD_BACKGROUND)));
+                        Controller.showDialog(Strings.OK, Strings.SAVED_CARD);
                     } else
-                        Controller.showDialog("Error", "Game can only have 12 cards!");
+                        Controller.showDialog(Strings.ERROR, Strings.MAX_CARDS_REACHED);
                 } catch (SQLException e) {
-                    Controller.showDialog("Error", "Couldn't save card!");
+                    Controller.showDialog(Strings.ERROR, Strings.ERROR_SAVE_CARD);
                 }
             }
         }
     }
 
     public void listCardsClicked() throws IOException {
-        Parent root = FXMLLoader.load(ClassLoader.getSystemResource("ListCards.fxml"));
+        Parent root = FXMLLoader.load(ClassLoader.getSystemResource(Strings.LIST_CARDS_FXML));
         Stage stage = (Stage) listCardsButton.getScene().getWindow();
         stage.getScene().setRoot(root);
     }
 
     public void removeCardsClicked() throws IOException {
-        Parent root = FXMLLoader.load(ClassLoader.getSystemResource("RemoveCards.fxml"));
+        Parent root = FXMLLoader.load(ClassLoader.getSystemResource(Strings.REMOVE_CARDS_FXML));
         Stage stage = (Stage) removeCardsButton.getScene().getWindow();
         stage.getScene().setRoot(root);
     }

@@ -11,6 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
+import utils.Strings;
 import models.Card;
 import models.Controller;
 import models.Score;
@@ -63,15 +64,15 @@ public class GameController extends Controller {
     @Override
     public void player() {
         if (answerCards.size() > imageViews.size()) {
-            showDialog("Error", "Game can only have 12 cards! Removing last added one.");
+            showDialog(Strings.ERROR, Strings.MAX_CARDS_REACHED);
             CardDao cardDao = new CardDao();
             try {
                 cardDao.delete(answerCards.get(answerCards.size() - 1).getId());
             } catch (SQLException e) {
-                showDialog("Error", "Couldn't delete last card.");
+                showDialog(Strings.ERROR, Strings.ERROR_DELETE_CARD);
             }
         } else if (answerCards.isEmpty() && imageViews.isEmpty())
-            showDialog("Error", "Couldn't load cards!");
+            showDialog(Strings.ERROR, Strings.ERROR_LOAD_CARDS);
         else
             for (int i = 0; i < imageViews.size(); i++) {
                 final ImageView imageView = imageViews.get(i);
@@ -112,14 +113,14 @@ public class GameController extends Controller {
 
             score.updateMoves();
 
-            Moves.setText("Moves: " + score.getMoves());
+            Moves.setText(Strings.MOVES + score.getMoves());
             disableAll();
 
             // If cards match, save them and disable
             if (idCard1.equals(idCard2)) {
                 score.updateFoundCards();
 
-                foundCardsLabel.setText("Found Pairs: " + score.getFoundCards());
+                foundCardsLabel.setText(Strings.FOUND_PAIRS + score.getFoundCards());
                 cardsMatched = true;
 
                 foundCards.add(imageCard1);
@@ -156,9 +157,9 @@ public class GameController extends Controller {
 
     public void gameEnded() {
         try {
-            showImportantDialog(backButton, game, "EndDialog.fxml", "Game Ended!");
+            showImportantDialog(backButton, game, Strings.END_DIALOG_FXML, Strings.END_DIALOG_TITLE);
         } catch (Exception e) {
-            showDialog("Error", "Couldn't end game!");
+            showDialog(Strings.ERROR, Strings.ERROR_END_GAME);
         }
     }
 
@@ -189,11 +190,11 @@ public class GameController extends Controller {
         try {
             ArrayList<Card> dbCards = cardDao.getAll();
             for (Card card : dbCards) {
-                answerCards.add(new Card(card.getId(), card.getQuestion(), card.getAnswer(), new Image("Images/Cards/backgroundSmall.png")));
-                questionCards.add(new Card(card.getId(), card.getQuestion(), card.getAnswer(), new Image("Images/Cards/backgroundSmall.png")));
+                answerCards.add(new Card(card.getId(), card.getQuestion(), card.getAnswer(), new Image(Strings.CARD_BACKGROUND)));
+                questionCards.add(new Card(card.getId(), card.getQuestion(), card.getAnswer(), new Image(Strings.CARD_BACKGROUND)));
             }
         } catch (SQLException e) {
-            showDialog("Error", "Couldn't load cards!");
+            showDialog(Strings.ERROR, Strings.ERROR_LOAD_CARDS);
         }
     }
 
@@ -201,6 +202,7 @@ public class GameController extends Controller {
         if (answerCards.size() <= 12)
             for (int i = 0; i < answerCards.size(); i++) {
                 imageViews.get(i).setImage(answerCards.get(i).getBackground());
+
                 questionCards.get(i).setAnswer(false);
                 imageViews.get(i + 12).setImage(questionCards.get(i).getBackground());
             }

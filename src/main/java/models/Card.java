@@ -30,7 +30,7 @@ public class Card {
         questionImg = rs.getBlob("question").getBinaryStream();
         answerImg = rs.getBlob("answer").getBinaryStream();
 
-        return new Card(rs.getInt("id"), new Image(questionImg), new Image(answerImg), new Image("Images/Cards/backgroundSmall.png"));
+        return new Card(rs.getInt("id"), new Image(questionImg), new Image(answerImg), new Image("Images/Cards/background.png"));
     }
 
     public Image getQuestion() {

@@ -2,6 +2,7 @@ package daos;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
+import utils.Strings;
 import models.Card;
 
 import javax.imageio.ImageIO;
@@ -24,7 +25,7 @@ public class CardDao implements DaoInterface<Card> {
             preparedStatement.setBlob(1, imageToBlob(card.getQuestion()));
             preparedStatement.setBlob(2, imageToBlob(card.getAnswer()));
 
-            preparedStatement.executeUpdate();
+            preparedStatement.execute();
 
             if (dbSingleton.getConnection() != null) {
                 dbSingleton.getConnection().close();
@@ -33,7 +34,7 @@ public class CardDao implements DaoInterface<Card> {
             if (dbSingleton.getConnection() != null) {
                 dbSingleton.getConnection().close();
             }
-            throw new Error("Couldn't insert match", e);
+            throw new Error(Strings.ERROR_SAVE_CARD, e);
         }
     }
 
@@ -58,7 +59,7 @@ public class CardDao implements DaoInterface<Card> {
             if (dbSingleton.getConnection() != null) {
                 dbSingleton.getConnection().close();
             }
-            throw new SQLException("Couldn't get card", e);
+            throw new SQLException(Strings.ERROR_LOAD_CARDS, e);
         }
     }
 
@@ -84,7 +85,7 @@ public class CardDao implements DaoInterface<Card> {
             if (dbSingleton.getConnection() != null) {
                 dbSingleton.getConnection().close();
             }
-            throw new SQLException("Couldn't get cards", e);
+            throw new SQLException(Strings.ERROR_LOAD_CARDS, e);
         }
     }
 
@@ -98,6 +99,8 @@ public class CardDao implements DaoInterface<Card> {
             preparedStatement.setBlob(2, imageToBlob(card.getAnswer()));
             preparedStatement.setInt(3, card.getId());
 
+            preparedStatement.executeUpdate();
+
             if (dbSingleton.getConnection() != null) {
                 dbSingleton.getConnection().close();
             }
@@ -105,7 +108,7 @@ public class CardDao implements DaoInterface<Card> {
             if (dbSingleton.getConnection() != null) {
                 dbSingleton.getConnection().close();
             }
-            throw new SQLException("Couldn't update card", e);
+            throw new SQLException(Strings.ERROR_SAVE_CARD, e);
         }
     }
 
@@ -117,24 +120,25 @@ public class CardDao implements DaoInterface<Card> {
 
             preparedStatement.setInt(1, id);
 
+            preparedStatement.execute();
+
             if (dbSingleton.getConnection() != null) {
                 dbSingleton.getConnection().close();
             }
-
         } catch (SQLException e) {
             if (dbSingleton.getConnection() != null) {
                 dbSingleton.getConnection().close();
             }
-            throw new SQLException("Couldn't delete card", e);
+            throw new SQLException(Strings.ERROR_DELETE_CARD, e);
         }
     }
 
     private SerialBlob imageToBlob(Image image) throws IOException, SQLException {
-        BufferedImage bImage = SwingFXUtils.fromFXImage(image, null);
-        ByteArrayOutputStream s = new ByteArrayOutputStream();
-        ImageIO.write(bImage, "png", s);
-        byte[] byteArray = s.toByteArray();
-        s.close();
+        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ImageIO.write(bufferedImage, "png", outputStream);
+        byte[] byteArray = outputStream.toByteArray();
+        outputStream.close();
         return new SerialBlob(byteArray);
     }
 }

@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import utils.Strings;
 
 import java.io.IOException;
 
@@ -34,11 +35,11 @@ public class DialogsController {
     @FXML
     private void goBackClicked() throws IOException {
         Stage dialog = (Stage) goBack.getScene().getWindow();
-        Parent root = FXMLLoader.load(ClassLoader.getSystemResource("Menu.fxml"));
+        Parent root = FXMLLoader.load(ClassLoader.getSystemResource(Strings.MENU_FXML));
         Stage stage = (Stage) dialog.getOwner().getScene().getWindow();
         Scene scene = new Scene(root, 1280, 720);
 
-        stage.setTitle("Mymori Game");
+        stage.setTitle(Strings.GAME_TITLE);
         stage.setScene(scene);
         stage.getScene().setRoot(root);
 

@@ -113,7 +113,7 @@ public class Controller {
         try {
             ArrayList<Card> dbCards = cardDao.getAll();
             for (Card card : dbCards) {
-                cards.add(new Card(card.getId(), card.getQuestion(), card.getAnswer(), new Image("Images/Cards/backgroundSmall.png")));
+                cards.add(new Card(card.getId(), card.getQuestion(), card.getAnswer(), new Image("Images/Cards/background.png")));
             }
         } catch (SQLException e) {
             showDialog("Error", "Couldn't load cards!");
