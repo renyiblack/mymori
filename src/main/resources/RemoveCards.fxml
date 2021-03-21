@@ -4,14 +4,14 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<AnchorPane fx:id="game" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #303030;"
+<AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #303030;"
             xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="controllers.RemoveCardsController">
     <GridPane fx:id="grid" alignment="CENTER" layoutX="63.0" prefHeight="578.0" prefWidth="570.0"
               AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
               AnchorPane.topAnchor="10.0">
     </GridPane>
-    <Button fx:id="back" focusTraversable="false" mnemonicParsing="false" onAction="#backClicked"
+    <Button fx:id="backButton" focusTraversable="false" mnemonicParsing="false" onAction="#backClicked"
             prefHeight="60.0" prefWidth="60.0" stylesheets="@css/buttons.css" AnchorPane.leftAnchor="2.0">
         <graphic>
             <ImageView fitHeight="29.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">

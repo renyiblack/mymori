@@ -1,19 +1,17 @@
 package models;
 
 import javafx.scene.image.Image;
-
-import java.io.IOException;
 import java.io.InputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Card {
+    private final int id;
     private final Image question;
     private final Image answer;
     private final Image background;
     private boolean isFlipped;
     private boolean isAnswer;
-    private final int id;
 
     public Card(int id, Image question, Image answer, Image background) {
         this.question = question;

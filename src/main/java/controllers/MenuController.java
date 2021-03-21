@@ -4,20 +4,15 @@ import daos.CardDao;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import models.Card;
+import models.Controller;
 
 import java.io.File;
 import java.io.IOException;
@@ -54,44 +49,12 @@ public class MenuController {
     }
 
     @FXML
-    private void exitClicked() throws Exception {
-        Stage primaryStage = (Stage) exitButton.getScene().getWindow();
-        GaussianBlur blur = new GaussianBlur(3);
-        menu.setEffect(blur);
-
-        Parent root = FXMLLoader.load(ClassLoader.getSystemResource("ExitDialog.fxml"));
-
-        Stage dialog = new Stage();
-        dialog.setTitle("Exit");
-
-        Scene scene = new Scene(root, 425, 200);
-        scene.setFill(Color.TRANSPARENT);
-        dialog.setScene(scene);
-        dialog.initModality(Modality.WINDOW_MODAL);
-        dialog.initOwner(primaryStage);
-        dialog.initStyle(StageStyle.TRANSPARENT);
-        dialog.setResizable(false);
-
-        double centerXPosition = primaryStage.getX() + primaryStage.getWidth() / 2d;
-        double centerYPosition = primaryStage.getY() + primaryStage.getHeight() / 2d;
-
-        dialog.setOnShowing(event -> dialog.hide());
-
-        dialog.setOnShown(event -> {
-            dialog.setX(centerXPosition - dialog.getWidth() / 2d);
-            dialog.setY(centerYPosition - dialog.getHeight() / 2d);
-            dialog.show();
-        });
-
-        dialog.show();
-    }
-
-    private void showDialog(String type, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(type);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+    private void exitClicked() {
+        try {
+            Controller.showImportantDialog(exitButton, menu, "ExitDialog.fxml", "Exit");
+        } catch (Exception e) {
+            Controller.showDialog("Error", "Couldn't close game!");
+        }
     }
 
     @FXML
@@ -106,24 +69,23 @@ public class MenuController {
         answerChooser = fileChooser.showOpenDialog(null);
 
         if (questionChooser == null || answerChooser == null) {
-            showDialog("Error", "Invalid Question or Answer!");
+            Controller.showDialog("Error", "Invalid Question or Answer!");
         } else {
             Image question = new Image(questionChooser.toURI().toString());
             Image answer = new Image(answerChooser.toURI().toString());
             if ((question.getHeight() != 726 && question.getWidth() != 500) || (answer.getHeight() != 726 && answer.getWidth() != 500)) {
-                showDialog("Error", "Question or Answer is not a valid image (500x726)");
+                Controller.showDialog("Error", "Question or Answer is not a valid image (500x726)");
             } else {
                 CardDao cardDao = new CardDao();
                 try {
                     ArrayList<Card> cards = cardDao.getAll();
-                    if(cards.size() < 12) {
+                    if (cards.size() < 12) {
                         cardDao.insert(new Card(0, question, answer, new Image("Images/Cards/backgroundSmall.png")));
-                        showDialog("Ok", "Card successfully saved!");
-                    }
-                    else
-                        showDialog("Error", "Game can only have 12 cards!");
+                        Controller.showDialog("Ok", "Card successfully saved!");
+                    } else
+                        Controller.showDialog("Error", "Game can only have 12 cards!");
                 } catch (SQLException e) {
-                    showDialog("Error", "Couldn't save card!");
+                    Controller.showDialog("Error", "Couldn't save card!");
                 }
             }
         }

@@ -5,51 +5,40 @@ import javafx.animation.KeyFrame;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 import models.Card;
+import models.Controller;
 import models.Score;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class GameController {
-    @FXML
-    private Button back;
-    @FXML
-    private GridPane grid;
+public class GameController extends Controller {
     @FXML
     private Label Moves, foundCardsLabel;
     @FXML
     private AnchorPane game;
 
-    public ArrayList<ImageView> imageViews, foundCards;
     public ImageView imageCard1, imageCard2;
-    public Card card1, card2;
+    public ArrayList<ImageView> foundCards;
     public ArrayList<Card> answerCards, questionCards;
+    public Card card1, card2;
+
     public Score score;
     public Boolean cardsMatched;
-    public int id1, id2;
+    public Integer idCard1, idCard2;
 
-    private int clicks = 0;
+    private Integer clicks = 0;
 
     public GameController() {
-        imageViews = new ArrayList<>();
+        super();
+        super.rows = 4;
         answerCards = new ArrayList<>();
         questionCards = new ArrayList<>();
         foundCards = new ArrayList<>();
@@ -62,15 +51,16 @@ public class GameController {
         startGame();
     }
 
+    @Override
     public void startGame() {
         createImageViews();
         createCards();
         shuffleCards();
         setImages();
-
         player();
     }
 
+    @Override
     public void player() {
         if (answerCards.size() > imageViews.size()) {
             showDialog("Error", "Game can only have 12 cards! Removing last added one.");
@@ -80,7 +70,9 @@ public class GameController {
             } catch (SQLException e) {
                 showDialog("Error", "Couldn't delete last card.");
             }
-        } else
+        } else if (answerCards.isEmpty() && imageViews.isEmpty())
+            showDialog("Error", "Couldn't load cards!");
+        else
             for (int i = 0; i < imageViews.size(); i++) {
                 final ImageView imageView = imageViews.get(i);
                 Card card;
@@ -108,26 +100,31 @@ public class GameController {
                 imageView.setImage(card.getQuestion());
         });
 
-
+        // Selected first card
         if (clicks == 1) {
-            id1 = card.getId();
+            idCard1 = card.getId();
             imageCard1 = imageView;
             card1 = card;
-        } else if (clicks == 2) {
-            id2 = card.getId();
+        } else if (clicks == 2) {  // Selected second card
+            idCard2 = card.getId();
             imageCard2 = imageView;
             card2 = card;
+
             score.updateMoves();
-            String moves = "Moves: ";
-            Moves.setText(moves + score.getMoves());
+
+            Moves.setText("Moves: " + score.getMoves());
             disableAll();
-            if (id1 == id2) {
+
+            // If cards match, save them and disable
+            if (idCard1.equals(idCard2)) {
                 score.updateFoundCards();
-                String foundPairs = "Found Pairs: ";
-                foundCardsLabel.setText(foundPairs + score.getFoundCards());
+
+                foundCardsLabel.setText("Found Pairs: " + score.getFoundCards());
                 cardsMatched = true;
+
                 foundCards.add(imageCard1);
                 foundCards.add(imageCard2);
+
                 Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.6), event -> {
                     imageCard1.setDisable(true);
                     imageCard2.setDisable(true);
@@ -136,14 +133,13 @@ public class GameController {
                     enableAll();
                 }));
                 timeline.play();
-            } else {
+            } else { // If cards don't match, turn them back
                 Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1.2), event -> {
                     imageCard1.setImage(card1.getBackground());
                     imageCard2.setImage(card2.getBackground());
                     imageCard1.setDisable(false);
                     imageCard2.setDisable(false);
                     enableAll();
-
                 }));
                 timeline.play();
             }
@@ -151,46 +147,19 @@ public class GameController {
             if (foundCards.size() == 24) {
                 Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1.2), event -> deleteCards(grid)));
                 timeline.play();
-                try {
-                    gameEnded();
-                } catch (IOException e) {
-                    showDialog("Error", "Couldn't end game!");
-                }
+
+                gameEnded();
             }
             clicks = 0;
         }
     }
 
-    public void gameEnded() throws IOException {
-        Stage primaryStage = (Stage) back.getScene().getWindow();
-        GaussianBlur blur = new GaussianBlur(3);
-        game.setEffect(blur);
-
-        Parent root = FXMLLoader.load(ClassLoader.getSystemResource("EndDialog.fxml"));
-
-        Stage dialog = new Stage();
-        dialog.setTitle("Game Ended!");
-
-        Scene scene = new Scene(root, 425, 200);
-        scene.setFill(Color.TRANSPARENT);
-        dialog.setScene(scene);
-        dialog.initModality(Modality.WINDOW_MODAL);
-        dialog.initOwner(primaryStage);
-        dialog.initStyle(StageStyle.TRANSPARENT);
-        dialog.setResizable(false);
-
-        double centerXPosition = primaryStage.getX() + primaryStage.getWidth() / 2d;
-        double centerYPosition = primaryStage.getY() + primaryStage.getHeight() / 2d;
-
-        dialog.setOnShowing(event -> dialog.hide());
-
-        dialog.setOnShown(event -> {
-            dialog.setX(centerXPosition - dialog.getWidth() / 2d);
-            dialog.setY(centerYPosition - dialog.getHeight() / 2d);
-            dialog.show();
-        });
-
-        dialog.show();
+    public void gameEnded() {
+        try {
+            showImportantDialog(backButton, game, "EndDialog.fxml", "Game Ended!");
+        } catch (Exception e) {
+            showDialog("Error", "Couldn't end game!");
+        }
     }
 
     public void deleteCards(GridPane grid) {
@@ -213,54 +182,6 @@ public class GameController {
         for (ImageView imageView : imageViews) {
             imageView.setDisable(true);
         }
-    }
-
-    public void backClicked() throws IOException {
-        Parent root = FXMLLoader.load(ClassLoader.getSystemResource("Menu.fxml"));
-        Stage stage = (Stage) back.getScene().getWindow();
-        stage.getScene().setRoot(root);
-    }
-
-    public void createImageViews() {
-        grid.setHgap(10);
-        grid.setVgap(10);
-
-        int rows = 4;
-        double height = 130;
-        int columns = 6;
-        double width = 90;
-
-        for (int i = 0; i < rows; i++) {
-            RowConstraints row = new RowConstraints(height);
-            row.setMinHeight(Double.MIN_VALUE);
-            row.setVgrow(Priority.ALWAYS);
-            grid.getRowConstraints().add(row);
-        }
-        for (int i = 0; i < columns; i++) {
-            ColumnConstraints column = new ColumnConstraints(width);
-            column.setMinWidth(Double.MIN_VALUE);
-            column.setHgrow(Priority.ALWAYS);
-            grid.getColumnConstraints().add(column);
-        }
-
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                ImageView imageView = new ImageView();
-                imageView.setPreserveRatio(true);
-                imageView.setFitWidth(width);
-                imageView.setFitHeight(height);
-                grid.add(imageView, j, i);
-                imageViews.add(imageView);
-            }
-        }
-    }
-
-    private void showDialog(String type, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(type);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 
     public void createCards() {

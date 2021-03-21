@@ -13,15 +13,119 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class CardDao implements DaoInterface<Card> {
-    private Connection conn;
+    private final DBSingleton dbSingleton = DBSingleton.getInstance();
 
     @Override
-    public void connect() {
+    public void insert(Card card) throws SQLException {
         try {
-            String url = "jdbc:mysql://127.0.0.1:3306/mymori?user=dev&password=dev";
-            conn = DriverManager.getConnection(url);
+            PreparedStatement preparedStatement = dbSingleton.getConnection()
+                    .prepareStatement("INSERT INTO cards (question, answer) VALUES (?, ?);");
+
+            preparedStatement.setBlob(1, imageToBlob(card.getQuestion()));
+            preparedStatement.setBlob(2, imageToBlob(card.getAnswer()));
+
+            preparedStatement.executeUpdate();
+
+            if (dbSingleton.getConnection() != null) {
+                dbSingleton.getConnection().close();
+            }
+        } catch (SQLException | IOException e) {
+            if (dbSingleton.getConnection() != null) {
+                dbSingleton.getConnection().close();
+            }
+            throw new Error("Couldn't insert match", e);
+        }
+    }
+
+    @Override
+    public Card get(int id) throws SQLException {
+        try {
+            PreparedStatement preparedStatement = dbSingleton.getConnection().prepareStatement(
+                    "select * from cards where cards.id = ?;");
+
+            preparedStatement.setInt(1, id);
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            Card card = Card.fromRs(rs);
+
+            if (dbSingleton.getConnection() != null) {
+                dbSingleton.getConnection().close();
+            }
+
+            return card;
         } catch (SQLException e) {
-            throw new Error("Failed connection!", e);
+            if (dbSingleton.getConnection() != null) {
+                dbSingleton.getConnection().close();
+            }
+            throw new SQLException("Couldn't get card", e);
+        }
+    }
+
+    @Override
+    public ArrayList<Card> getAll() throws SQLException {
+        ArrayList<Card> cards = new ArrayList<>();
+        try {
+            PreparedStatement preparedStatement = dbSingleton.getConnection().prepareStatement(
+                    "select * from cards;");
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                cards.add(Card.fromRs(rs));
+            }
+
+            if (dbSingleton.getConnection() != null) {
+                dbSingleton.getConnection().close();
+            }
+
+            return cards;
+        } catch (SQLException e) {
+            if (dbSingleton.getConnection() != null) {
+                dbSingleton.getConnection().close();
+            }
+            throw new SQLException("Couldn't get cards", e);
+        }
+    }
+
+    @Override
+    public void update(Card card) throws SQLException {
+        try {
+            PreparedStatement preparedStatement =
+                    dbSingleton.getConnection().prepareStatement("UPDATE cards c SET c.question = ?, c.answer = ? WHERE c.id = ?;");
+
+            preparedStatement.setBlob(1, imageToBlob(card.getQuestion()));
+            preparedStatement.setBlob(2, imageToBlob(card.getAnswer()));
+            preparedStatement.setInt(3, card.getId());
+
+            if (dbSingleton.getConnection() != null) {
+                dbSingleton.getConnection().close();
+            }
+        } catch (SQLException | IOException e) {
+            if (dbSingleton.getConnection() != null) {
+                dbSingleton.getConnection().close();
+            }
+            throw new SQLException("Couldn't update card", e);
+        }
+    }
+
+    @Override
+    public void delete(int id) throws SQLException {
+        try {
+            PreparedStatement preparedStatement =
+                    dbSingleton.getConnection().prepareStatement("DELETE FROM cards WHERE cards.id = ?;");
+
+            preparedStatement.setInt(1, id);
+
+            if (dbSingleton.getConnection() != null) {
+                dbSingleton.getConnection().close();
+            }
+
+        } catch (SQLException e) {
+            if (dbSingleton.getConnection() != null) {
+                dbSingleton.getConnection().close();
+            }
+            throw new SQLException("Couldn't delete card", e);
         }
     }
 
@@ -32,135 +136,5 @@ public class CardDao implements DaoInterface<Card> {
         byte[] byteArray = s.toByteArray();
         s.close();
         return new SerialBlob(byteArray);
-    }
-
-    @Override
-    public void insert(Card card) throws SQLException {
-        connect();
-
-        try {
-            PreparedStatement preparedStatement = conn
-                    .prepareStatement("INSERT INTO cards (question, answer) VALUES (?, ?);");
-
-            preparedStatement.setBlob(1, imageToBlob(card.getQuestion()));
-            preparedStatement.setBlob(2, imageToBlob(card.getAnswer()));
-
-            preparedStatement.executeUpdate();
-
-            if (conn != null) {
-                conn.close();
-            }
-        } catch (SQLException | IOException e) {
-            if (conn != null) {
-                conn.close();
-            }
-            throw new Error("Couldn't insert match", e);
-        }
-    }
-
-    @Override
-    public Card get(int id) throws SQLException {
-        connect();
-
-        try {
-            PreparedStatement preparedStatement = conn.prepareStatement(
-                    "select * from cards where cards.id = ?;");
-
-            preparedStatement.setInt(1, id);
-
-            ResultSet rs = preparedStatement.executeQuery();
-
-            Card card = Card.fromRs(rs);
-
-            if (conn != null) {
-                conn.close();
-            }
-
-            return card;
-        } catch (SQLException e) {
-            if (conn != null) {
-                conn.close();
-            }
-            throw new SQLException("Couldn't get card", e);
-        }
-    }
-
-    public ArrayList<Card> getAll() throws SQLException {
-        connect();
-
-        ArrayList<Card> cards = new ArrayList<>();
-        try {
-            PreparedStatement preparedStatement = conn.prepareStatement(
-                    "select * from cards;");
-
-            ResultSet rs = preparedStatement.executeQuery();
-
-            while (rs.next()) {
-                cards.add(Card.fromRs(rs));
-            }
-
-            if (conn != null) {
-                conn.close();
-            }
-
-            return cards;
-        } catch (SQLException e) {
-            if (conn != null) {
-                conn.close();
-            }
-            throw new SQLException("Couldn't get cards", e);
-        }
-    }
-
-    @Override
-    public boolean update(Card card) throws SQLException {
-        connect();
-
-        try {
-            PreparedStatement preparedStatement =
-                    conn.prepareStatement("UPDATE cards c SET c.question = ?, c.answer = ? WHERE c.id = ?;");
-
-            preparedStatement.setBlob(1, imageToBlob(card.getQuestion()));
-            preparedStatement.setBlob(2, imageToBlob(card.getAnswer()));
-            preparedStatement.setInt(3, card.getId());
-
-            int updateCount = preparedStatement.executeUpdate();
-
-            if (conn != null) {
-                conn.close();
-            }
-
-            return updateCount != 0;
-        } catch (SQLException | IOException e) {
-            if (conn != null) {
-                conn.close();
-            }
-            throw new SQLException("Couldn't update card", e);
-        }
-    }
-
-    @Override
-    public boolean delete(int id) throws SQLException {
-        connect();
-
-        try {
-            PreparedStatement preparedStatement =
-                    conn.prepareStatement("DELETE FROM cards WHERE cards.id = ?;");
-
-            preparedStatement.setInt(1, id);
-
-            boolean removed = preparedStatement.execute();
-
-            if (conn != null) {
-                conn.close();
-            }
-
-            return removed;
-        } catch (SQLException e) {
-            if (conn != null) {
-                conn.close();
-            }
-            throw new SQLException("Couldn't delete card", e);
-        }
     }
 }

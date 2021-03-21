@@ -53,14 +53,17 @@
         </Button>
         <Button fx:id="listCardsButton" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false"
                 maxHeight="80.0" maxWidth="400.0" minWidth="200.0" mnemonicParsing="false" onAction="#listCardsClicked"
-                prefHeight="53.0" prefWidth="179.0" stylesheets="@css/buttons.css" text="LIST CARDS" VBox.vgrow="ALWAYS">
+                prefHeight="53.0" prefWidth="179.0" stylesheets="@css/buttons.css" text="LIST CARDS"
+                VBox.vgrow="ALWAYS">
             <VBox.margin>
                 <Insets left="200.0" right="200.0"/>
             </VBox.margin>
         </Button>
         <Button fx:id="removeCardsButton" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false"
-                maxHeight="80.0" maxWidth="400.0" minWidth="200.0" mnemonicParsing="false" onAction="#removeCardsClicked"
-                prefHeight="53.0" prefWidth="179.0" stylesheets="@css/buttons.css" text="REMOVE CARD" VBox.vgrow="ALWAYS">
+                maxHeight="80.0" maxWidth="400.0" minWidth="200.0" mnemonicParsing="false"
+                onAction="#removeCardsClicked"
+                prefHeight="53.0" prefWidth="179.0" stylesheets="@css/buttons.css" text="REMOVE CARD"
+                VBox.vgrow="ALWAYS">
             <VBox.margin>
                 <Insets left="200.0" right="200.0"/>
             </VBox.margin>
