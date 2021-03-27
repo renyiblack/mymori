@@ -41,8 +41,8 @@ public class CardDao implements DaoInterface<Card> {
     @Override
     public Card get(int id) throws SQLException {
         try {
-            PreparedStatement preparedStatement = dbSingleton.getConnection().prepareStatement(
-                    "select * from cards where cards.id = ?;");
+            PreparedStatement preparedStatement = dbSingleton.getConnection()
+                    .prepareStatement("select * from cards where cards.id = ?;");
 
             preparedStatement.setInt(1, id);
 
@@ -67,8 +67,7 @@ public class CardDao implements DaoInterface<Card> {
     public ArrayList<Card> getAll() throws SQLException {
         ArrayList<Card> cards = new ArrayList<>();
         try {
-            PreparedStatement preparedStatement = dbSingleton.getConnection().prepareStatement(
-                    "select * from cards;");
+            PreparedStatement preparedStatement = dbSingleton.getConnection().prepareStatement("select * from cards;");
 
             ResultSet rs = preparedStatement.executeQuery();
 
@@ -92,8 +91,8 @@ public class CardDao implements DaoInterface<Card> {
     @Override
     public void update(Card card) throws SQLException {
         try {
-            PreparedStatement preparedStatement =
-                    dbSingleton.getConnection().prepareStatement("UPDATE cards c SET c.question = ?, c.answer = ? WHERE c.id = ?;");
+            PreparedStatement preparedStatement = dbSingleton.getConnection()
+                    .prepareStatement("UPDATE cards c SET c.question = ?, c.answer = ? WHERE c.id = ?;");
 
             preparedStatement.setBlob(1, imageToBlob(card.getQuestion()));
             preparedStatement.setBlob(2, imageToBlob(card.getAnswer()));
@@ -115,8 +114,8 @@ public class CardDao implements DaoInterface<Card> {
     @Override
     public void delete(int id) throws SQLException {
         try {
-            PreparedStatement preparedStatement =
-                    dbSingleton.getConnection().prepareStatement("DELETE FROM cards WHERE cards.id = ?;");
+            PreparedStatement preparedStatement = dbSingleton.getConnection()
+                    .prepareStatement("DELETE FROM cards WHERE cards.id = ?;");
 
             preparedStatement.setInt(1, id);
 

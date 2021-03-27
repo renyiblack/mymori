@@ -7,11 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 import models.Card;
 
-public class ListCardsController  extends Controller {
-    public ListCardsController() {
-        super();
-    }
-
+public class ListCardsController extends Controller {
     @FXML
     private void initialize() {
         startGame();

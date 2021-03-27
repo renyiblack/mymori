@@ -4,18 +4,13 @@ import daos.CardDao;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import models.Card;
+import utils.Dialogs;
 import utils.Strings;
 
 import java.io.IOException;
@@ -27,36 +22,36 @@ public class Controller {
     protected Button backButton;
     @FXML
     protected GridPane grid;
-    public ArrayList<ImageView> imageViews;
     public ArrayList<Card> cards;
     public ImageView cardImage;
     protected Integer rows, columns;
     protected Double height, width;
+    public ArrayList<ImageView> imageViews;
 
     protected Controller() {
         rows = 2;
         columns = 6;
         height = 130.00;
         width = 90.00;
-        imageViews = new ArrayList<>();
         cards = new ArrayList<>();
+        imageViews = new ArrayList<>();
     }
 
     public void startGame() {
-        createImageViews();
-        createCards();
+        setImageViews();
+        setCards();
         setImages();
-        player();
+        setAction();
     }
 
-    public void player() {
+    public void setAction() {
         if (cards.size() > imageViews.size()) {
-            showDialog(Strings.ERROR, Strings.MAX_CARDS_REACHED);
+            Dialogs.showDialog(Strings.ERROR, Strings.MAX_CARDS_REACHED);
             CardDao cardDao = new CardDao();
             try {
                 cardDao.delete(cards.get(cards.size() - 1).getId());
             } catch (SQLException e) {
-                showDialog(Strings.ERROR, Strings.ERROR_DELETE_CARD);
+                Dialogs.showDialog(Strings.ERROR, Strings.ERROR_DELETE_CARD);
             }
         } else
             for (int i = 0; i < cards.size(); i++) {
@@ -77,11 +72,11 @@ public class Controller {
                 stage.getScene().setRoot(root);
             }
         } catch (IOException e) {
-            showDialog("Error", "Couldn't go back to menu!");
+            Dialogs.showDialog("Error", "Couldn't go back to menu!");
         }
     }
 
-    public void createImageViews() {
+    public void setImageViews() {
         grid.setHgap(10);
         grid.setVgap(10);
 
@@ -110,56 +105,17 @@ public class Controller {
         }
     }
 
-    public void createCards() {
+    public void setCards() {
         CardDao cardDao = new CardDao();
         try {
             ArrayList<Card> dbCards = cardDao.getAll();
             for (Card card : dbCards) {
-                cards.add(new Card(card.getId(), card.getQuestion(), card.getAnswer(), new Image("Images/Cards/background.png")));
+                cards.add(new Card(card.getId(), card.getQuestion(), card.getAnswer(),
+                        new Image("Images/Cards/background.png")));
             }
         } catch (SQLException e) {
-            showDialog("Error", "Couldn't load cards!");
+            Dialogs.showDialog("Error", "Couldn't load cards!");
         }
-    }
-
-    public static void showDialog(String type, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(type);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    public static void showImportantDialog(Button button, AnchorPane anchorPane, String FXML, String title) throws Exception {
-        Stage primaryStage = (Stage) button.getScene().getWindow();
-        GaussianBlur blur = new GaussianBlur(3);
-        anchorPane.setEffect(blur);
-
-        Parent root = FXMLLoader.load(ClassLoader.getSystemResource(FXML));
-
-        Stage dialog = new Stage();
-        dialog.setTitle(title);
-
-        Scene scene = new Scene(root, 425, 200);
-        scene.setFill(Color.TRANSPARENT);
-        dialog.setScene(scene);
-        dialog.initModality(Modality.WINDOW_MODAL);
-        dialog.initOwner(primaryStage);
-        dialog.initStyle(StageStyle.TRANSPARENT);
-        dialog.setResizable(false);
-
-        double centerXPosition = primaryStage.getX() + primaryStage.getWidth() / 2d;
-        double centerYPosition = primaryStage.getY() + primaryStage.getHeight() / 2d;
-
-        dialog.setOnShowing(event -> dialog.hide());
-
-        dialog.setOnShown(event -> {
-            dialog.setX(centerXPosition - dialog.getWidth() / 2d);
-            dialog.setY(centerYPosition - dialog.getHeight() / 2d);
-            dialog.show();
-        });
-
-        dialog.show();
     }
 
     public void setImages() {

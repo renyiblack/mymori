@@ -3,16 +3,13 @@ package controllers;
 import daos.CardDao;
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
+import utils.Dialogs;
 import utils.Strings;
 import models.Card;
 
 import java.sql.SQLException;
 
 public class RemoveCardsController extends Controller {
-    public RemoveCardsController() {
-        super();
-    }
-
     @FXML
     private void initialize() {
         startGame();
@@ -28,9 +25,9 @@ public class RemoveCardsController extends Controller {
             System.out.println(card.getId());
             CardDao cardDao = new CardDao();
             cardDao.delete(card.getId());
-            showDialog(Strings.OK, Strings.DELETED_CARD);
+            Dialogs.showDialog(Strings.OK, Strings.DELETED_CARD);
         } catch (SQLException e) {
-            showDialog(Strings.ERROR, Strings.ERROR_DELETE_CARD);
+            Dialogs.showDialog(Strings.ERROR, Strings.ERROR_DELETE_CARD);
         }
     }
 }

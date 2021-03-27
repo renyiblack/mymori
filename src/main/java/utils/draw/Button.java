@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 
 public class Button extends AbstractAction {
+    private static final long serialVersionUID = 1L;
+
     public enum Buttons {
         BLACK,
         ORANGE,

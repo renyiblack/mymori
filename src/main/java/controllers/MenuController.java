@@ -12,6 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import utils.draw.Drawing;
+import utils.Dialogs;
 import utils.Strings;
 import models.Card;
 
@@ -54,9 +55,9 @@ public class MenuController {
     @FXML
     private void exitClicked() {
         try {
-            Controller.showImportantDialog(exitButton, menu, Strings.EXIT_DIALOG_FXML, Strings.EXIT_DIALOG_TITLE);
+            Dialogs.showImportantDialog(exitButton, menu, Strings.EXIT_DIALOG_FXML, Strings.EXIT_DIALOG_TITLE);
         } catch (Exception e) {
-            Controller.showDialog(Strings.ERROR, Strings.ERROR_CLOSE_GAME);
+            Dialogs.showDialog(Strings.ERROR, Strings.ERROR_CLOSE_GAME);
         }
     }
 
@@ -73,30 +74,31 @@ public class MenuController {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG files(*.png)", "*.png"));
         fileChooser.setTitle(Strings.QUESTION_CHOOSER_TITLE);
-        Controller.showDialog(Strings.CARD_CHOOSER, Strings.QUESTION_CHOOSER);
+        Dialogs.showDialog(Strings.CARD_CHOOSER, Strings.QUESTION_CHOOSER);
         questionChooser = fileChooser.showOpenDialog(null);
-        Controller.showDialog(Strings.CARD_CHOOSER, Strings.ANSWER_CHOOSER);
+        Dialogs.showDialog(Strings.CARD_CHOOSER, Strings.ANSWER_CHOOSER);
         fileChooser.setTitle(Strings.ANSWER_CHOOSER_TITLE);
         answerChooser = fileChooser.showOpenDialog(null);
 
         if (questionChooser == null || answerChooser == null) {
-            Controller.showDialog(Strings.ERROR, Strings.INVALID_QUESTION_ANSWER);
+            Dialogs.showDialog(Strings.ERROR, Strings.INVALID_QUESTION_ANSWER);
         } else {
             Image question = new Image(questionChooser.toURI().toString());
             Image answer = new Image(answerChooser.toURI().toString());
-            if ((question.getHeight() != 726 && question.getWidth() != 500) || (answer.getHeight() != 726 && answer.getWidth() != 500)) {
-                Controller.showDialog(Strings.ERROR, Strings.INVALID_QUESTION_ANSWER_SIZE);
+            if ((question.getHeight() != 726 && question.getWidth() != 500)
+                    || (answer.getHeight() != 726 && answer.getWidth() != 500)) {
+                Dialogs.showDialog(Strings.ERROR, Strings.INVALID_QUESTION_ANSWER_SIZE);
             } else {
                 CardDao cardDao = new CardDao();
                 try {
                     ArrayList<Card> cards = cardDao.getAll();
                     if (cards.size() < 12) {
                         cardDao.insert(new Card(0, question, answer, new Image(Strings.CARD_BACKGROUND)));
-                        Controller.showDialog(Strings.OK, Strings.SAVED_CARD);
+                        Dialogs.showDialog(Strings.OK, Strings.SAVED_CARD);
                     } else
-                        Controller.showDialog(Strings.ERROR, Strings.MAX_CARDS_REACHED);
+                        Dialogs.showDialog(Strings.ERROR, Strings.MAX_CARDS_REACHED);
                 } catch (SQLException e) {
-                    Controller.showDialog(Strings.ERROR, Strings.ERROR_SAVE_CARD);
+                    Dialogs.showDialog(Strings.ERROR, Strings.ERROR_SAVE_CARD);
                 }
             }
         }

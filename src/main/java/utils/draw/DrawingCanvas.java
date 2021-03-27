@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 
 class DrawingCanvas extends JPanel {
+    private static final long serialVersionUID = 1L;
     protected static final int PREF_W = 500;
     protected static final int PREF_H = 726;
     public static final Stroke IMG_STROKE = new BasicStroke(10f);
