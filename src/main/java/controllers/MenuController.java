@@ -1,6 +1,7 @@
 package controllers;
 
 import daos.CardDao;
+import games.MemoryGame;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -47,7 +48,14 @@ public class MenuController {
 
     @FXML
     private void playClicked() throws IOException {
-        Parent root = FXMLLoader.load(ClassLoader.getSystemResource(Strings.GAME_FXML));
+
+        FXMLLoader fxmlLoader = new FXMLLoader(ClassLoader.getSystemResource(Strings.GAME_FXML));
+
+        Parent root = (Parent) fxmlLoader.load();
+
+        GameController controller = fxmlLoader.<GameController>getController();
+        controller.setGame(new MemoryGame());
+        
         Stage stage = (Stage) playButton.getScene().getWindow();
         stage.getScene().setRoot(root);
     }

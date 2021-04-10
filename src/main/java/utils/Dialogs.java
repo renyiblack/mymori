@@ -1,5 +1,7 @@
 package utils;
 
+import java.io.IOException;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -21,8 +23,7 @@ public abstract class Dialogs {
         alert.showAndWait();
     }
 
-    public static void showImportantDialog(Button button, AnchorPane anchorPane, String FXML, String title)
-            throws Exception {
+    public static void showImportantDialog(Button button, AnchorPane anchorPane, String FXML, String title) throws IOException {
         Stage primaryStage = (Stage) button.getScene().getWindow();
         GaussianBlur blur = new GaussianBlur(3);
         anchorPane.setEffect(blur);

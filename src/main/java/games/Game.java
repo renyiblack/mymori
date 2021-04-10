@@ -1,5 +1,7 @@
 package games;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 
 import javafx.scene.control.Button;
@@ -47,6 +49,10 @@ public class Game {
         try {
             Dialogs.showImportantDialog(backButton, gamePane, Strings.END_DIALOG_FXML, Strings.END_DIALOG_TITLE);
         } catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            System.out.println(sw.toString());
             Dialogs.showDialog(Strings.ERROR, Strings.ERROR_END_GAME);
         }
     }

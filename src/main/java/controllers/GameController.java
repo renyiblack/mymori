@@ -23,25 +23,17 @@ public class GameController extends Controller {
     private AnchorPane gamePane;
     Game game;
 
-    public GameController() {
-        this(new MemoryGame());
-    }
-
-    GameController(Game game) {
+    public void setGame(Game game) {
         this.game = game;
         super.rows = 4;
-    }
-
-    @FXML
-    private void initialize() {
         startGame();
     }
 
     @Override
     public void startGame() {
-        setImageViews();
+        setImageViews(game.imageViews);
         setCards();
-        shuffleCards();
+        // shuffleCards();
         setImages();
         setAction();
     }
@@ -93,7 +85,7 @@ public class GameController extends Controller {
                 game.questionCards.add(new Card(card.getId(), card.getQuestion(), card.getAnswer(),
                         new Image(Strings.CARD_BACKGROUND)));
             }
-        } catch (SQLException e) {
+        } catch (SQLException | NullPointerException e) {
             Dialogs.showDialog(Strings.ERROR, Strings.ERROR_LOAD_CARDS);
         }
     }

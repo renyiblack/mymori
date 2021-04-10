@@ -38,7 +38,7 @@ public class Controller {
     }
 
     public void startGame() {
-        setImageViews();
+        setImageViews(imageViews);
         setCards();
         setImages();
         setAction();
@@ -76,7 +76,7 @@ public class Controller {
         }
     }
 
-    public void setImageViews() {
+    public void setImageViews(ArrayList<ImageView> imageViews) {
         grid.setHgap(10);
         grid.setVgap(10);
 
