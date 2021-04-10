@@ -22,7 +22,6 @@ public class RemoveCardsController extends Controller {
         cards.remove(card);
 
         try {
-            System.out.println(card.getId());
             CardDao cardDao = new CardDao();
             cardDao.delete(card.getId());
             Dialogs.showDialog(Strings.OK, Strings.DELETED_CARD);

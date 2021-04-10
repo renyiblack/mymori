@@ -12,7 +12,7 @@ public class DBSingleton {
 
     private void connect() throws SQLException {
         try {
-            connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/mymori?user=dev&password=dev");
+            connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/mimory?user=dev&password=Dev%2612345");
         } catch (SQLException e) {
             throw new SQLException(Strings.FAILED_CONNECTION);
         }
