@@ -19,7 +19,7 @@ public class MemoryGame extends Game {
 
     public Integer idCard1, idCard2;
 
-    MemoryGame() {
+    public MemoryGame() {
         cardsMatched = false;
         foundCards = new ArrayList<>();
     }

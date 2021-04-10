@@ -2,6 +2,7 @@ package controllers;
 
 import daos.CardDao;
 import games.Game;
+import games.MemoryGame;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -22,7 +23,11 @@ public class GameController extends Controller {
     private AnchorPane gamePane;
     Game game;
 
-    public GameController(Game game) {
+    public GameController() {
+        this(new MemoryGame());
+    }
+
+    GameController(Game game) {
         this.game = game;
         super.rows = 4;
     }
