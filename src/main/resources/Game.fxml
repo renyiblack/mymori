@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="game" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #303030;"
+<AnchorPane fx:id="gamePane" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #303030;"
             xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="controllers.GameController">
     <SplitPane dividerPositions="0.7" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #303030;"
@@ -38,7 +38,7 @@
                     <RowConstraints maxHeight="70.0" minHeight="10.0" prefHeight="58.0" vgrow="SOMETIMES"/>
                     <RowConstraints maxHeight="70.0" minHeight="10.0" prefHeight="52.0" vgrow="SOMETIMES"/>
                 </rowConstraints>
-                <Label fx:id="Moves" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                <Label fx:id="moves" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
                        prefHeight="70.0" prefWidth="287.0" text=" Moves: " textFill="WHITE">
                     <font>
                         <Font size="18.0"/>

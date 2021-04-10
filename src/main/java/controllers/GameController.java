@@ -2,7 +2,6 @@ package controllers;
 
 import daos.CardDao;
 import games.Game;
-import games.MemoryGame;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -18,7 +17,7 @@ import java.util.Collections;
 
 public class GameController extends Controller {
     @FXML
-    private Label Moves, foundCardsLabel;
+    private Label moves, foundCardsLabel;
     @FXML
     private AnchorPane gamePane;
     Game game;
@@ -33,7 +32,7 @@ public class GameController extends Controller {
     public void startGame() {
         setImageViews(game.imageViews);
         setCards();
-        // shuffleCards();
+        shuffleCards();
         setImages();
         setAction();
     }
@@ -71,7 +70,7 @@ public class GameController extends Controller {
     @Override
     public void clickEvent(ImageView imageView, Card card) {
         game.gameRule(imageView, card, grid, backButton, gamePane);
-        Moves.setText(Strings.MOVES + game.score.getMoves());
+        moves.setText(Strings.MOVES + game.score.getMoves());
         foundCardsLabel.setText(Strings.FOUND_PAIRS + game.score.getFoundCards());
     }
 
