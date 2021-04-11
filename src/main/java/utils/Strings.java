@@ -5,6 +5,7 @@ public abstract class Strings {
     public static final String GAME_TITLE = "Mymori";
     public static final String EXIT_DIALOG_TITLE = "Exit";
     public static final String END_DIALOG_TITLE = "Game Ended";
+    public static final String END_MEMORY_GAME_DIALOG_TITLE = "Memory Game Ended";
     public static final String CARD_BACKGROUND = "Images/Cards/background.png";
     public static final String QUESTION_CHOOSER_TITLE = "Question Chooser";
     public static final String ANSWER_CHOOSER_TITLE = "Answer Chooser";

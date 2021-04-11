@@ -33,7 +33,7 @@ public class GameController extends Controller {
         setImageViews(game.imageViews);
         game.oldImageViews = game.imageViews;
         setCards();
-        // shuffleCards();
+        shuffleCards();
         setImages();
         setAction();
     }

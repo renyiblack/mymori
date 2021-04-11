@@ -8,7 +8,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
 import models.Card;
+import utils.Dialogs;
+import utils.Strings;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MemoryGame extends Game {
@@ -87,9 +90,18 @@ public class MemoryGame extends Game {
                 Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1.2), event -> deleteCards(grid)));
                 timeline.play();
 
-                super.gameEnded(backButton, gamePane);
+                this.gameEnded(backButton, gamePane);
             }
             clicks = 0;
+        }
+    }
+
+    @Override
+    public void gameEnded(Button backButton, AnchorPane gamePane) {
+        try {
+            Dialogs.showImportantDialog(backButton, gamePane, Strings.END_DIALOG_FXML, Strings.END_MEMORY_GAME_DIALOG_TITLE);
+        } catch (IOException e) {
+            Dialogs.showDialog(Strings.ERROR, Strings.ERROR_END_GAME);
         }
     }
 }
