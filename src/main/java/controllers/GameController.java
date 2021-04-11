@@ -31,8 +31,9 @@ public class GameController extends Controller {
     @Override
     public void startGame() {
         setImageViews(game.imageViews);
+        game.oldImageViews = game.imageViews;
         setCards();
-        shuffleCards();
+        // shuffleCards();
         setImages();
         setAction();
     }
@@ -79,9 +80,9 @@ public class GameController extends Controller {
         try {
             ArrayList<Card> dbCards = cardDao.getAll();
             for (Card card : dbCards) {
-                game.answerCards.add(new Card(card.getId(), card.getQuestion(), card.getAnswer(),
-                        new Image(Strings.CARD_BACKGROUND)));
                 game.questionCards.add(new Card(card.getId(), card.getQuestion(), card.getAnswer(),
+                        new Image(Strings.CARD_BACKGROUND)));
+                game.answerCards.add(new Card(card.getId(), card.getQuestion(), card.getAnswer(),
                         new Image(Strings.CARD_BACKGROUND)));
             }
         } catch (SQLException | NullPointerException e) {

@@ -16,6 +16,7 @@ public class Game {
     public ArrayList<Card> answerCards, questionCards;
     public ArrayList<ImageView> foundCards;
     public ArrayList<ImageView> imageViews;
+    public ArrayList<ImageView> oldImageViews;
     public Score score;
 
     Game() {

@@ -2,6 +2,7 @@ package controllers;
 
 import daos.CardDao;
 import games.MemoryGame;
+import games.SequenceGame;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -54,7 +55,8 @@ public class MenuController {
         Parent root = (Parent) fxmlLoader.load();
 
         GameController controller = fxmlLoader.<GameController>getController();
-        controller.setGame(new MemoryGame());
+        // controller.setGame(new MemoryGame());
+        controller.setGame(new SequenceGame());
         
         Stage stage = (Stage) playButton.getScene().getWindow();
         stage.getScene().setRoot(root);
