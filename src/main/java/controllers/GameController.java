@@ -30,8 +30,8 @@ public class GameController extends Controller {
 
     @Override
     public void startGame() {
-        setImageViews(game.imageViews);
-        game.oldImageViews = game.imageViews;
+        setImageViews(game.cardsViews);
+        game.oldImageViews = game.cardsViews;
         setCards();
         shuffleCards();
         setImages();
@@ -48,24 +48,24 @@ public class GameController extends Controller {
             } catch (SQLException e) {
                 Dialogs.showDialog(Strings.ERROR, Strings.ERROR_DELETE_CARD);
             }
-        } else if (game.answerCards.isEmpty() && game.imageViews.isEmpty())
+        } else if (game.answerCards.isEmpty() && game.cardsViews.isEmpty())
             Dialogs.showDialog(Strings.ERROR, Strings.ERROR_LOAD_CARDS);
         else if (game.answerCards.size() < 12)
             Dialogs.showDialog(Strings.ERROR, Strings.TOO_FEW_CARDS);
         else
-            for (int i = 0; i < game.imageViews.size(); i++) {
-                final ImageView imageView = game.imageViews.get(i);
+            for (int i = 0; i < game.cardsViews.size(); i++) {
+                final ImageView imageView = game.cardsViews.get(i);
                 Card card;
                 if (i < 12)
                     card = game.answerCards.get(i);
                 else
                     card = game.questionCards.get(i - 12);
-                game.imageViews.get(i).setOnMouseClicked(event -> clickEvent(imageView, card));
+                game.cardsViews.get(i).setOnMouseClicked(event -> clickEvent(imageView, card));
             }
     }
 
     public void gameEnded() {
-        game.gameEnded(backButton, gamePane);
+        game.endNotification(backButton, gamePane);
     }
 
     @Override
@@ -93,14 +93,14 @@ public class GameController extends Controller {
     public void setImages() {
         if (game.answerCards.size() == 12)
             for (int i = 0; i < game.answerCards.size(); i++) {
-                game.imageViews.get(i).setImage(game.answerCards.get(i).getBackground());
+                game.cardsViews.get(i).setImage(game.answerCards.get(i).getBackground());
 
                 game.questionCards.get(i).setAnswer(false);
-                game.imageViews.get(i + 12).setImage(game.questionCards.get(i).getBackground());
+                game.cardsViews.get(i + 12).setImage(game.questionCards.get(i).getBackground());
             }
     }
 
     public void shuffleCards() {
-        Collections.shuffle(game.imageViews);
+        Collections.shuffle(game.cardsViews);
     }
 }

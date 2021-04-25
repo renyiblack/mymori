@@ -14,14 +14,15 @@ import utils.Strings;
 
 public class Game {
     public ArrayList<Card> answerCards, questionCards;
-    public ArrayList<ImageView> foundCards;
-    public ArrayList<ImageView> imageViews;
+    public ArrayList<ImageView> foundCardsViews;
+    public ArrayList<ImageView> cardsViews;
     public ArrayList<ImageView> oldImageViews;
     public Score score;
+    public Double animationTime;
 
     Game() {
         score = new Score();
-        imageViews = new ArrayList<>();
+        cardsViews = new ArrayList<>();
         answerCards = new ArrayList<>();
         questionCards = new ArrayList<>();
     }
@@ -29,23 +30,23 @@ public class Game {
     public void gameRule(ImageView imageView, Card card, GridPane grid, Button backButton, AnchorPane gamePane) {
     }
 
-    public void disableAll() {
-        for (ImageView imageView : imageViews) {
+    public void disableAllCards() {
+        for (ImageView imageView : cardsViews) {
             imageView.setDisable(true);
         }
     }
 
-    public void enableAll() {
-        for (ImageView imageView : imageViews) {
+    public void enableAllCards() {
+        for (ImageView imageView : cardsViews) {
             imageView.setDisable(false);
         }
 
-        for (ImageView foundCard : foundCards) {
+        for (ImageView foundCard : foundCardsViews) {
             foundCard.setDisable(true);
         }
     }
 
-    public void gameEnded(Button backButton, AnchorPane gamePane) {
+    public void endNotification(Button backButton, AnchorPane gamePane) {
         try {
             Dialogs.showImportantDialog(backButton, gamePane, Strings.END_DIALOG_FXML, Strings.END_DIALOG_TITLE);
         } catch (IOException e) {
@@ -54,7 +55,7 @@ public class Game {
     }
 
     public void deleteCards(GridPane grid) {
-        for (ImageView imageView : imageViews) {
+        for (ImageView imageView : cardsViews) {
             grid.getChildren().remove(imageView);
         }
     }

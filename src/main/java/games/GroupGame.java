@@ -12,7 +12,7 @@ import models.Card;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class SequenceGame extends Game {
+public class GroupGame extends Game {
     public ArrayList<ImageView> imageCards;
     public ArrayList<Card> shuffleCards;
     public ArrayList<Card> selectedCards;
@@ -21,7 +21,7 @@ public class SequenceGame extends Game {
     private Integer level;
     private Boolean lvlStarted;
 
-    public SequenceGame() {
+    public GroupGame() {
         this.clicks = -1;
         this.level = 0;
         this.lvlStarted = true;
@@ -38,7 +38,7 @@ public class SequenceGame extends Game {
         if (clicks > 0) {
             flip(imageView, card);
 
-            if (card.getId() == shuffleCards.get(clicks - 1).getId()) {
+            if (shuffleCards.contains(card)) {
                 score.updateFoundCards();
 
                 foundCardsViews.add(imageView);
