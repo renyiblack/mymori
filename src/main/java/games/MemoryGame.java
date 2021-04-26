@@ -28,7 +28,7 @@ public class MemoryGame extends Game {
         this.foundCardsViews = new ArrayList<>();
     }
 
-    public void flipCard(ImageView imageView, Card card) {
+    public void flip(ImageView imageView, Card card) {
         imageView.setDisable(true);
 
         ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(this.animationTime), imageView);
@@ -52,7 +52,7 @@ public class MemoryGame extends Game {
         cardsMatched = false;
         clicks++;
 
-        flipCard(imageView, card);
+        flip(imageView, card);
 
         // Selected first card
         if (clicks == 1) {
