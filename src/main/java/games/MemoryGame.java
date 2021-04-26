@@ -47,17 +47,6 @@ public class MemoryGame extends Game {
         });
     }
 
-    public void selectCard(ImageView cardImage, boolean disable, boolean shouldReenable) {
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(this.animationTime), event -> {
-            cardImage.setDisable(disable);
-            cardImage.setOpacity(0.6);
-
-            if (shouldReenable)
-                enableAllCards();
-        }));
-        timeline.play();
-    }
-
     @Override
     public void gameRule(ImageView imageView, Card card, GridPane grid, Button backButton, AnchorPane gamePane) {
         cardsMatched = false;
@@ -88,11 +77,11 @@ public class MemoryGame extends Game {
                 foundCardsViews.add(imageCard1);
                 foundCardsViews.add(imageCard2);
 
-                selectCard(imageCard1, true, true);
-                selectCard(imageCard2, true, true);
+                super.selectCard(imageCard1, true, true);
+                super.selectCard(imageCard2, true, true);
             } else { // If cards don't match, turn them back
-                selectCard(imageCard1, false, true);
-                selectCard(imageCard2, false, true);
+                super.selectCard(imageCard1, false, true);
+                super.selectCard(imageCard2, false, true);
             }
 
             if (foundCardsViews.size() == 24) {

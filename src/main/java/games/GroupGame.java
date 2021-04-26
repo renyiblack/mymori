@@ -38,11 +38,18 @@ public class GroupGame extends Game {
         if (clicks > 0) {
             flip(imageView, card);
 
-            if (shuffleCards.contains(card)) {
-                score.updateFoundCards();
+            boolean found = false;
 
-                foundCardsViews.add(imageView);
-            } else {
+            for (Card c : shuffleCards)
+                if (c.getId() == card.getId()) {
+                    score.updateFoundCards();
+
+                    foundCardsViews.add(imageView);
+                    found = true;
+                    break;
+                }
+                
+            if (!found) {
                 Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1.2), event -> deleteCards(grid)));
                 timeline.play();
 

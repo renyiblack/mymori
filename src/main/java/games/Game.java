@@ -3,10 +3,13 @@ package games;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.util.Duration;
 import models.Card;
 import models.Score;
 import utils.Dialogs;
@@ -25,6 +28,17 @@ public class Game {
         cardsViews = new ArrayList<>();
         answerCards = new ArrayList<>();
         questionCards = new ArrayList<>();
+    }
+
+    public void selectCard(ImageView cardImage, boolean disable, boolean shouldReenable) {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(this.animationTime), event -> {
+            cardImage.setDisable(disable);
+            cardImage.setOpacity(0.6);
+
+            if (shouldReenable)
+                enableAllCards();
+        }));
+        timeline.play();
     }
 
     public void gameRule(ImageView imageView, Card card, GridPane grid, Button backButton, AnchorPane gamePane) {
