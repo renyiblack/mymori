@@ -4,7 +4,7 @@ A simple flash card memory game with support to custom cards
 
 # Class Diagram
 
-![alt text](https://github.com/inuyVessalius/mymori/blob/main/diagram.png?raw=true)
+![alt text](https://github.com/inuyVessalius/mymori/blob/main/group%20game%20diagram.png?raw=true)
 
 # Authors
 
