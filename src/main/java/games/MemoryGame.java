@@ -77,11 +77,11 @@ public class MemoryGame extends Game {
                 foundCardsViews.add(imageCard1);
                 foundCardsViews.add(imageCard2);
 
-                super.selectCard(imageCard1, true, true);
-                super.selectCard(imageCard2, true, true);
+                super.selectCard(imageCard1, card1, true);
+                super.selectCard(imageCard2, card2, true);
             } else { // If cards don't match, turn them back
-                super.selectCard(imageCard1, false, true);
-                super.selectCard(imageCard2, false, true);
+                super.selectCard(imageCard1, card1, false);
+                super.selectCard(imageCard2, card2, false);
             }
 
             if (foundCardsViews.size() == 24) {

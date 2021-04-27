@@ -30,13 +30,21 @@ public class Game {
         questionCards = new ArrayList<>();
     }
 
-    public void selectCard(ImageView cardImage, boolean disable, boolean shouldReenable) {
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(this.animationTime), event -> {
-            cardImage.setDisable(disable);
-            cardImage.setOpacity(0.6);
+    public void selectCard(ImageView cardImage, Card card, boolean disable) {
+        Double animation = this.animationTime;
 
-            if (shouldReenable)
-                enableAllCards();
+        if (!disable)
+            animation = 2 * animationTime;
+
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(animation), event -> {
+            if (disable)
+                cardImage.setOpacity(0.6);
+            else
+                cardImage.setImage(card.getBackground());
+
+            cardImage.setDisable(disable);
+
+            enableAllCards();
         }));
         timeline.play();
     }
